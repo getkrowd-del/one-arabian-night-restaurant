@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://getkrowd-del.github.io/one-arabian-night-restaurant/sitemap.xml
+Sitemap: https://onearabiannight.getkrowd.com/sitemap.xml
