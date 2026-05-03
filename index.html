@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- BASE:START (managed by Coding Agent — do not edit) -->
+<base href="/one-arabian-night-restaurant/">
+<!-- BASE:END -->
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400;600;700&family=Lato:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+
+
+<!-- SEO Meta Tags -->
+<title>One Arabian Night Restaurant | Seattle, WA</title>
+<meta property="og:title" content="One Arabian Night Restaurant | Seattle, WA" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="One Arabian Night Restaurant | Seattle, WA" />
+<!-- End SEO Meta Tags -->
+
+<script data-field-replace>
+(function(){
+  var params=new URLSearchParams(window.location.search);
+  var fields={};
+  var paramMap={
+    'first_name':'firstName','last_name':'lastName','full_name':'fullName',
+    'email':'email','phone':'phone','company':'company',
+    'city':'city','state':'state','country':'country'
+  };
+  var skipTags={'SCRIPT':1,'STYLE':1,'NOSCRIPT':1,'TEXTAREA':1,'CODE':1,'PRE':1};
+  var hasUrlFields=false;
+  for(var p in paramMap){
+    var v=params.get(p);
+    if(v){fields[paramMap[p]]=v;hasUrlFields=true;}
+  }
+  var contactId=params.get('contact_id');
+  function esc(s){
+    if(!s)return s;
+    var d=document.createElement('div');
+    d.appendChild(document.createTextNode(s));
+    return d.innerHTML;
+  }
+  function doReplace(data){
+    var r={};
+    r['{{full_name}}']=esc(((data.firstName||'')+' '+(data.lastName||'')).trim()||((data.fullName||data.name)||''));
+    r['{{first_name}}']=esc(data.firstName||(data.name?data.name.split(' ')[0]:'')||'');
+    r['{{last_name}}']=esc(data.lastName||(data.name&&data.name.indexOf(' ')>-1?data.name.substring(data.name.indexOf(' ')+1):'')||'');
+    r['{{email}}']=esc(data.email||'');
+    r['{{phone}}']=esc(data.phone||'');
+    r['{{company}}']=esc(data.company||'');
+    r['{{city}}']=esc(data.city||'');
+    r['{{state}}']=esc(data.state||'');
+    r['{{country}}']=esc(data.country||'');
+    r['{{date}}']=new Date().toLocaleDateString();
+    r['{{time}}']=new Date().toLocaleTimeString();
+    r['{{location}}']=[data.city,data.state,data.country].filter(Boolean).join(', ');
+    r['{{tracking_id}}']=esc(data.trackingId||'');
+    r['{{lastClickedProduct}}']=esc(data.lastClickedProduct||'');
+    r['{{lastProductClickDate}}']=esc(data.lastProductClickDate||'');
+    r['{{lastClickedProductPrice}}']=esc(data.lastClickedProductPrice||'');
+    r['{{lastClickedProductURL}}']=esc(data.lastClickedProductURL||'');
+    r['{{productsClickedCount}}']=esc(data.productsClickedCount||'0');
+    r['{{ip_address}}']=esc(data.ipAddress||'');
+    r['{{ip}}']=esc(data.ipAddress||'');
+    if(data.customFields){
+      for(var k in data.customFields){
+        r['{{'+k+'}}']=esc(String(data.customFields[k]||''));
+      }
+    }
+    params.forEach(function(v,k){
+      if(!paramMap[k]&&k!=='contact_id'&&k!=='page_id'&&k.indexOf('utm_')!==0){
+        r['{{'+k+'}}']=esc(v);
+      }
+    });
+    var hasValues=false;
+    for(var key in r){if(r[key]){hasValues=true;break;}}
+    if(!hasValues)return;
+    var walker=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT,{
+      acceptNode:function(n){
+        var p=n.parentNode;
+        if(p&&skipTags[p.nodeName])return NodeFilter.FILTER_REJECT;
+        return NodeFilter.FILTER_ACCEPT;
+      }
+    });
+    var node;
+    while(node=walker.nextNode()){
+      var txt=node.nodeValue;
+      if(txt&&txt.indexOf('{{')>-1){
+        var changed=txt;
+        for(var ph in r){
+          if(r[ph]&&changed.indexOf(ph)>-1){
+            changed=changed.split(ph).join(r[ph]);
+          }
+        }
+        if(changed!==txt)node.nodeValue=changed;
+      }
+    }
+    var attrs=['value','placeholder','content','alt','title'];
+    attrs.forEach(function(attr){
+      var els=document.querySelectorAll('['+attr+'*="{{"]');
+      for(var i=0;i<els.length;i++){
+        var tag=els[i].tagName;
+        if(skipTags[tag])continue;
+        var val=els[i].getAttribute(attr);
+        if(val){
+          var nv=val;
+          for(var ph in r){
+            if(r[ph]&&nv.indexOf(ph)>-1){
+              nv=nv.split(ph).join(r[ph]);
+            }
+          }
+          if(nv!==val)els[i].setAttribute(attr,nv);
+        }
+      }
+    });
+  }
+  function run(){
+    if(contactId){
+      var xhr=new XMLHttpRequest();
+      xhr.open('GET','https://paymegpt.com/api/landing/context/'+encodeURIComponent(contactId)+'?page_id=3727');
+      xhr.onload=function(){
+        if(xhr.status===200){
+          try{
+            var resp=JSON.parse(xhr.responseText);
+            if(resp.success&&resp.contact){
+              var merged=resp.contact;
+              for(var k in fields){merged[k]=fields[k];}
+              doReplace(merged);
+              return;
+            }
+          }catch(e){}
+        }
+        if(hasUrlFields)doReplace(fields);
+      };
+      xhr.onerror=function(){if(hasUrlFields)doReplace(fields);};
+      xhr.send();
+    }else if(hasUrlFields){
+      doReplace(fields);
+    }
+  }
+  if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',run);}
+  else{run();}
+})();
+</script>
+<script data-payment>
+(function(){
+  var slug='SrmkChunH';
+  var apiBase='https://paymegpt.com';
+  function findEmail(){
+    var ids=['email','emailAddress','buyer-email','buyerEmail','user-email','userEmail','checkout-email','customer-email','contact-email'];
+    for(var i=0;i<ids.length;i++){var el=document.getElementById(ids[i]);if(el&&el.value&&el.value.includes('@'))return el.value.trim();}
+    var inputs=document.querySelectorAll('input[type="email"],input[name*="email"],input[placeholder*="email"],input[placeholder*="Email"]');
+    for(var j=0;j<inputs.length;j++){if(inputs[j].value&&inputs[j].value.includes('@'))return inputs[j].value.trim();}
+    return '';
+  }
+  function findName(){
+    var ids=['name','fullName','full-name','buyer-name','buyerName','customer-name','userName','user-name'];
+    for(var i=0;i<ids.length;i++){var el=document.getElementById(ids[i]);if(el&&el.value)return el.value.trim();}
+    var inputs=document.querySelectorAll('input[name*="name"]:not([name*="email"]):not([type="email"]),input[placeholder*="name"]:not([placeholder*="email"]):not([type="email"]),input[placeholder*="Name"]:not([type="email"])');
+    for(var j=0;j<inputs.length;j++){if(inputs[j].value)return inputs[j].value.trim();}
+    return '';
+  }
+  var __realProcessPayment=function(a,b,c,d,e){
+    var amountCents,email,productName,productDescription,customerName,quantity;
+    if(a&&typeof a==='object'){
+      amountCents=a.amountCents;email=a.email;productName=a.productName;
+      productDescription=a.productDescription||'';customerName=a.name||'';quantity=a.quantity||1;
+    }else{
+      amountCents=typeof a==='number'?a:0;productName=typeof b==='string'?b:'';
+      productDescription=typeof c==='string'?c:'';email='';customerName='';quantity=1;
+    }
+    if(!email)email=findEmail();
+    if(!customerName)customerName=findName();
+    if(!productName){alert('Product name is required.');return Promise.reject('no_product_name');}
+    if(!amountCents||amountCents<100){alert('Amount must be at least $1.00');return Promise.reject('invalid_amount');}
+    if(!email){alert('Please enter your email address.');return Promise.reject('no_email');}
+    var successBase=window.location.href.split('?')[0];
+    return fetch(apiBase+'/api/landing-pages/public/'+slug+'/payment/checkout',{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({email:email,name:customerName,amountCents:amountCents,productName:productName,productDescription:productDescription,quantity:quantity,successUrl:successBase+'?payment=success&product='+encodeURIComponent(productName)+'&session_id={CHECKOUT_SESSION_ID}',cancelUrl:successBase+'?payment=cancelled'})
+    }).then(function(r){return r.json();}).then(function(d){
+      if(d.checkoutUrl){window.location.href=d.checkoutUrl;}
+      else{alert(d.error||'Failed to process payment');throw new Error(d.error);}
+    });
+  };
+  Object.defineProperty(window,'__processPayment',{value:__realProcessPayment,writable:false,configurable:false});
+  document.addEventListener('DOMContentLoaded',function(){
+    var urlParams=new URLSearchParams(window.location.search);
+    if(urlParams.get('payment')==='success'){
+      var pName=urlParams.get('product')||'your item';
+      var overlay=document.createElement('div');overlay.id='payment-success-overlay';
+      overlay.style.cssText='position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;z-index:999999;font-family:system-ui,-apple-system,sans-serif;';
+      overlay.innerHTML='<div style="background:white;border-radius:16px;padding:40px;max-width:420px;width:90%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.15);"><div style="width:64px;height:64px;border-radius:50%;background:#dcfce7;margin:0 auto 20px;display:flex;align-items:center;justify-content:center;"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><h2 style="margin:0 0 12px;font-size:24px;font-weight:700;color:#111827;">Payment Successful!</h2><p style="margin:0 0 24px;color:#6b7280;font-size:16px;">Thank you for purchasing '+pName.replace(/</g,'&lt;').replace(/>/g,'&gt;')+'.</p><button onclick="document.getElementById(\'payment-success-overlay\').remove();window.history.replaceState({},\'\',window.location.pathname);" style="padding:12px 32px;font-size:16px;font-weight:600;background:#16a34a;color:white;border:none;border-radius:8px;cursor:pointer;">Continue</button></div>';
+      document.body.appendChild(overlay);
+    }
+  });
+})();
+</script>  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- FIXED NAV WRAPPER -->
+<div class="nav-wrapper">
+
+  <!-- TOP BAR -->
+  <div class="topbar">
+    <div class="topbar-social">
+      <a href="#">IG</a>
+      <a href="#">FB</a>
+      <a href="#">Yelp</a>
+    </div>
+    <div class="topbar-divider"></div>
+    <div class="topbar-info">
+      <a href="https://maps.google.com/?q=1001+Arabian+Night+Blvd+Seattle+WA">
+        📍 1001 Arabian Night Blvd, Seattle, WA 98101
+      </a>
+      <a href="tel:+12065550199">📞 (206) 555-0199</a>
+      <a href="#reserve">✦ Reservations</a>
+    </div>
+  </div>
+
+  <!-- MAIN NAV: left links — logo — right links -->
+  <nav class="nav-bottom">
+    <div class="nav-inner">
+      <!-- LEFT LINKS -->
+      <ul class="nav-left">
+        <li><a href="#story">Our Story</a></li>
+        <li><a href="#menu">Menu</a></li>
+      </ul>
+
+      <!-- CENTER LOGO -->
+      <div class="nav-logo-wrap">
+        <a href="#">
+          <svg class="nav-logo-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+            <path d="M100 20 C60 20,30 55,30 95 L30 160 L170 160 L170 95 C170 55,140 20,100 20Z" fill="none" stroke="#C9952A" stroke-width="2.5"/>
+            <path d="M100 35 C68 35,48 62,48 95 L48 148 L152 148 L152 95 C152 62,132 35,100 35Z" fill="none" stroke="#E8C46A" stroke-width="1"/>
+            <circle cx="100" cy="18" r="5" fill="#C9952A"/>
+            <line x1="38" y1="115" x2="22" y2="115" stroke="#C9952A" stroke-width="2"/>
+            <line x1="22" y1="108" x2="22" y2="122" stroke="#C9952A" stroke-width="2"/>
+            <line x1="18" y1="108" x2="18" y2="122" stroke="#C9952A" stroke-width="2"/>
+            <line x1="26" y1="108" x2="26" y2="122" stroke="#C9952A" stroke-width="2"/>
+            <line x1="162" y1="115" x2="178" y2="115" stroke="#C9952A" stroke-width="2"/>
+            <line x1="178" y1="108" x2="178" y2="122" stroke="#C9952A" stroke-width="2"/>
+            <line x1="174" y1="108" x2="174" y2="122" stroke="#C9952A" stroke-width="2"/>
+            <line x1="182" y1="108" x2="182" y2="122" stroke="#C9952A" stroke-width="2"/>
+            <text x="100" y="90" font-family="Georgia,serif" font-size="17" font-weight="900" fill="#C9952A" text-anchor="middle">ONE</text>
+            <text x="100" y="112" font-family="Georgia,serif" font-size="13" font-weight="700" fill="#E8C46A" text-anchor="middle">ARABIAN</text>
+            <text x="100" y="131" font-family="Georgia,serif" font-size="10" fill="#C9952A" text-anchor="middle">NIGHT</text>
+            <line x1="60" y1="146" x2="140" y2="146" stroke="#C9952A" stroke-width="1.5"/>
+            <text x="100" y="163" font-family="Arial,sans-serif" font-size="7" fill="#E8C46A" text-anchor="middle" letter-spacing="4">RESTAURANT</text>
+          </svg>
+        </a>
+      </div>
+
+      <!-- RIGHT LINKS -->
+      <ul class="nav-right">
+        <li><a href="#experience">Experience</a></li>
+        <li><a href="#reserve" class="nav-reserve-btn">Reserve</a></li>
+      </ul>
+
+      <!-- MOBILE HAMBURGER -->
+      <button class="nav-hamburger" onclick="document.getElementById('mobileMenu').classList.toggle('open')">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- MOBILE MENU -->
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#story" onclick="document.getElementById('mobileMenu').classList.remove('open')">Our Story</a>
+    <a href="#menu" onclick="document.getElementById('mobileMenu').classList.remove('open')">Menu</a>
+    <a href="#experience" onclick="document.getElementById('mobileMenu').classList.remove('open')">Experience</a>
+    <a href="#reserve" onclick="document.getElementById('mobileMenu').classList.remove('open')">Reserve a Table</a>
+    <a href="tel:+12065550199">📞 (206) 555-0199</a>
+    <a href="https://maps.google.com/?q=1001+Arabian+Night+Blvd+Seattle+WA">📍 Get Directions</a>
+  </div>
+</div>
+
+<!-- ══ HERO ══ -->
+<section class="hero">
+  <div class="hero-geo"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-logo-wrap">
+    <svg class="hero-logo-big" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+      <path d="M100 20 C60 20,30 55,30 95 L30 160 L170 160 L170 95 C170 55,140 20,100 20Z" fill="none" stroke="#C9952A" stroke-width="2.5"/>
+      <path d="M100 35 C68 35,48 62,48 95 L48 148 L152 148 L152 95 C152 62,132 35,100 35Z" fill="none" stroke="#E8C46A" stroke-width="1"/>
+      <circle cx="100" cy="18" r="5" fill="#C9952A"/>
+      <line x1="38" y1="115" x2="22" y2="115" stroke="#C9952A" stroke-width="2"/>
+      <line x1="22" y1="108" x2="22" y2="122" stroke="#C9952A" stroke-width="2"/>
+      <line x1="18" y1="108" x2="18" y2="122" stroke="#C9952A" stroke-width="2"/>
+      <line x1="26" y1="108" x2="26" y2="122" stroke="#C9952A" stroke-width="2"/>
+      <line x1="162" y1="115" x2="178" y2="115" stroke="#C9952A" stroke-width="2"/>
+      <line x1="178" y1="108" x2="178" y2="122" stroke="#C9952A" stroke-width="2"/>
+      <line x1="174" y1="108" x2="174" y2="122" stroke="#C9952A" stroke-width="2"/>
+      <line x1="182" y1="108" x2="182" y2="122" stroke="#C9952A" stroke-width="2"/>
+      <text x="100" y="90" font-family="Georgia,serif" font-size="17" font-weight="900" fill="#C9952A" text-anchor="middle">ONE</text>
+      <text x="100" y="112" font-family="Georgia,serif" font-size="13" font-weight="700" fill="#E8C46A" text-anchor="middle">ARABIAN</text>
+      <text x="100" y="131" font-family="Georgia,serif" font-size="10" fill="#C9952A" text-anchor="middle">NIGHT</text>
+      <line x1="60" y1="146" x2="140" y2="146" stroke="#C9952A" stroke-width="1.5"/>
+      <text x="100" y="163" font-family="Arial,sans-serif" font-size="7" fill="#E8C46A" text-anchor="middle" letter-spacing="4">RESTAURANT</text>
+    </svg>
+  </div>
+  <p class="hero-eyebrow">An Authentic Arabian Dining Experience</p>
+  <h1 class="hero-title">One Arabian<br><span>Night</span></h1>
+  <div class="divider"><div class="diamond"></div></div>
+  <p class="hero-sub">Where ancient spice routes meet timeless hospitality</p>
+  <div class="cta-group">
+    <a href="#menu" class="btn-gold">Explore the Menu</a>
+    <a href="#reserve" class="btn-outline">Reserve a Table</a>
+  </div>
+  <div class="scroll-hint"><span>Scroll</span><div class="scroll-line"></div></div>
+</section>
+
+<!-- ══ STORY ══ -->
+<section class="story" id="story">
+  <div>
+    <div class="eyebrow">Our Heritage</div>
+    <h2 class="sec-title">A Journey Through<br><span>Arabian Cuisine</span></h2>
+    <p class="body-t">Step into a world where centuries-old recipes come alive. One Arabian Night Restaurant was born from a passion for the rich culinary traditions of the Arabian Peninsula — from the fragrant souks of Marrakech to the spice markets of Riyadh.</p>
+    <p class="body-t">Every dish tells a story. Every spice carries memory. We source our ingredients with devotion and prepare each plate as an act of love — honoring the chefs, grandmothers, and traditions that came before us.</p>
+    <a href="#menu" class="btn-outline" style="margin-top:2rem;display:inline-block;">Discover Our Dishes</a>
+  </div>
+  <div>
+    <div class="story-frame">
+      <span class="story-frame-moon">🌙</span>
+      <p class="story-quote">"Hospitality is the art of the Arabian soul"</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══ MENU ══ -->
+<section class="menu-sec" id="menu">
+  <div class="eyebrow" style="justify-content:center;">The Menu</div>
+  <h2 class="sec-title" style="margin-bottom:3rem;">Crafted With <span>Ancient Wisdom</span></h2>
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('starters',this)">Starters</button>
+    <button class="tab" onclick="switchTab('mains',this)">Main Course</button>
+    <button class="tab" onclick="switchTab('grills',this)">From the Grill</button>
+    <button class="tab" onclick="switchTab('desserts',this)">Desserts</button>
+  </div>
+
+  <div class="menu-grid" id="tab-starters">
+    <div class="dish"><div class="dish-top"><span class="dish-name">Saltah Soup</span><span class="dish-price">$12</span></div><p class="dish-desc">Traditional Yemeni broth with fenugreek foam, vegetables, and aromatic spices — the national soul of Yemen</p><span class="dish-tag">Chef's Favourite</span></div>
+    <div class="dish"><div class="dish-top"><span class="dish-name">Fatayer Trio</span><span class="dish-price">$14</span></div><p class="dish-desc">Golden pastry triangles filled with spiced lamb, spinach &amp; feta, and caramelized onion with sumac</p><span class="dish-tag">Signature</span></div>
+    <div class="dish"><div class="dish-top"><span class="dish-name">Marib Mezze</span><span class="dish-price">$18</span></div><p class="dish-desc">Lavish spread of hummus, mutabbal, haydari, warm khobz bread and crispy falafel dusted in cumin</p><span class="dish-tag">House Specialty</span></div>
+    <div class="dish"><div class="dish-top"><span class="dish-name">Fattoush al-Qamar</span><span class="dish-price">$11</span></div><p class="dish-desc">Crisp garden salad with pomegranate, fried bread, and a tamarind-pomegranate dressing drizzled with olive oil</p><span class="dish-tag">Vegan · GF Option</span></div>
+  </div>
+
+  <div class="menu-grid" id="tab-mains" style="display:none">
+    <div class="dish"><div class="dish-top"><span class="dish-name">Lamb Haneeth</span><span class="dish-price">$38</span></div><p class="dish-desc">Whole slow-roasted leg of lamb in a sealed clay pot, perfumed with saffron, cardamom and dried Yemeni limes</p><span class="dish-tag">House Specialty</span></div>
+    <div class="dish"><div class="dish-top"><span class="dish-name">Zurbian al-Marib</span><span class="dish-price">$32</span></div><p class="dish-desc">Aromatic lamb and basmati rice layered with fried onions, raisins, almonds, and the prized Marib spice blend</p><span class="dish-tag">Traditional</span></div>
+    <div class="dish"><div class="dish-top"><span class="dish-name">Samak Mashwi</span><span class="dish-price">$34</span></div><p class="dish-desc">Whole grilled sea bream marinated in chermoula, served over saffron rice with charred lemon and herb salad</p></div>
+    <div class="dish"><div class="dish-top"><span class="dish-name">Ful al-Hajar</span><span class="dish-price">$22</span></div><p class="dish-desc">Heritage fava beans slow-cooked in olive oil, garlic and cumin — a timeless Yemeni recipe from the mountains</p><span class="dish-tag">Vegan</span></div>
+  </div>
+
+  <div class="menu-grid" id="tab-grills" style="display:none">
+    <div class="dish"><div class="dish-top"><span class="dish-name">Meshoui Platter</span><span class="dish-price">$45</span></div><p class="dish-desc">Royal mixed grill of lamb chops, chicken thighs and kofta over charcoal, with grilled vegetables and three sauces</p><span class="dish-tag">Signature · Feeds 2</span></div>
+    <div class="dish"><div class="dish-top"><span class="dish-name">Shish Tawook</span><span class="dish-price">$28</span></div><p class="dish-desc">Marinated chicken skewers with Arabian spices, served with saffron garlic aioli and warm lavash bread</p></div>
+    <div class="dish"><div class="dish-top"><span class="dish-name">Asado Marib</span><span class="dish-price">$52</span></div><p class="dish-desc">Prime ribeye marinated 48 hours in a hawaej spice blend, grilled over wood and finished with rose-water butter</p><span class="dish-tag">Chef's Favourite</span></div>
+    <div class="dish"><div class="dish-top"><span class="dish-name">Ouzi Royale</span><span class="dish-price">$49</span></div><p class="dish-desc">Whole roasted baby lamb shoulder, slow-cooked over a wood fire and served ceremonially with fragrant rice</p><span class="dish-tag">House Specialty</span></div>
+  </div>
+
+  <div class="menu-grid" id="tab-desserts" style="display:none">
+    <div class="dish"><div class="dish-top"><span class="dish-name">Luqaimat al-Ward</span><span class="dish-price">$11</span></div><p class="dish-desc">Golden honey dumplings drizzled with rose-infused sidr honey and crushed pistachios, served warm</p><span class="dish-tag">Traditional</span></div>
+    <div class="dish"><div class="dish-top"><span class="dish-name">Qishr Creme Brulee</span><span class="dish-price">$13</span></div><p class="dish-desc">Classic French custard infused with Yemeni qishr — ginger and coffee husk spice — caramelized to perfection</p><span class="dish-tag">Chef's Creation</span></div>
+    <div class="dish"><div class="dish-top"><span class="dish-name">Basbousa bi Qamar al-Din</span><span class="dish-price">$10</span></div><p class="dish-desc">Semolina cake soaked in apricot blossom syrup, topped with clotted cream and candied rose petals</p></div>
+    <div class="dish"><div class="dish-top"><span class="dish-name">Arabian Tea Service</span><span class="dish-price">$8</span></div><p class="dish-desc">Ceremonial pot of cardamom mint tea with Yemeni sidr honey, dates and almond-filled ma'amoul cookies</p><span class="dish-tag">Complimentary with Ouzi</span></div>
+  </div>
+
+  <a href="#reserve" class="btn-gold" style="display:inline-block;">Book Your Experience</a>
+</section>
+
+<!-- ══ EXPERIENCE ══ -->
+<section class="experience" id="experience">
+  <div class="eyebrow" style="justify-content:center;">The Experience</div>
+  <h2 class="sec-title">More Than A Meal,<br><span>A Memory</span></h2>
+  <div class="pillars">
+    <div><span class="pillar-icon">🕌</span><span class="pillar-name">Atmosphere</span><p class="pillar-text">Lanterns, arches, and hand-crafted details transport you to another world</p></div>
+    <div><span class="pillar-icon">🌿</span><span class="pillar-name">Fresh Ingredients</span><p class="pillar-text">Locally sourced produce, imported spices, and daily-made bread</p></div>
+    <div><span class="pillar-icon">🎶</span><span class="pillar-name">Live Music</span><p class="pillar-text">Traditional oud and Arabian music every Friday and Saturday evening</p></div>
+    <div><span class="pillar-icon">🍵</span><span class="pillar-name">Arabian Tea</span><p class="pillar-text">Complimentary cardamom mint tea with every dining experience</p></div>
+  </div>
+</section>
+
+<!-- ══ RESERVE ══ -->
+<section class="reserve" id="reserve">
+  <div>
+    <div class="eyebrow">Reservations</div>
+    <h2 class="sec-title">Reserve Your<br><span>Evening</span></h2>
+    <p class="body-t">Join us for an unforgettable evening of flavour, culture, and warm Arabian hospitality. We welcome walk-ins, but reservations are recommended.</p>
+    <div class="contact-block">
+      <div class="contact-row">
+        <span class="contact-icon">📍</span>
+        <div>
+          <span class="contact-label">Location</span>
+          <p class="contact-val"><a href="https://maps.google.com/?q=1001+Arabian+Night+Blvd+Seattle+WA" target="_blank">1001 Arabian Night Blvd<br>Seattle, WA 98101</a></p>
+        </div>
+      </div>
+      <div class="contact-row">
+        <span class="contact-icon">🕐</span>
+        <div>
+          <span class="contact-label">Hours</span>
+          <p class="contact-val">Mon – Thu: 11am – 10pm<br>Fri – Sat: 11am – 12am<br>Sunday: 12pm – 9pm</p>
+        </div>
+      </div>
+      <div class="contact-row">
+        <span class="contact-icon">📞</span>
+        <div>
+          <span class="contact-label">Phone</span>
+          <p class="contact-val"><a href="tel:+12065550199">(206) 555-0199</a></p>
+        </div>
+      </div>
+      <div class="contact-row">
+        <span class="contact-icon">✉️</span>
+        <div>
+          <span class="contact-label">Email</span>
+          <p class="contact-val"><a href="mailto:info@onearabiannight.com">info@onearabiannight.com</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div class="two-col">
+      <div class="field"><label>First Name</label><input type="text" placeholder="Aisha"></div>
+      <div class="field"><label>Last Name</label><input type="text" placeholder="Rahman"></div>
+    </div>
+    <div class="field"><label>Email</label><input type="email" placeholder="your@email.com"></div>
+    <div class="field"><label>Phone</label><input type="tel" placeholder="(206) 555-0000"></div>
+    <div class="two-col">
+      <div class="field"><label>Date</label><input type="date"></div>
+      <div class="field"><label>Time</label>
+        <select><option value="">Select time</option><option>6:00 PM</option><option>6:30 PM</option><option>7:00 PM</option><option>7:30 PM</option><option>8:00 PM</option><option>8:30 PM</option><option>9:00 PM</option></select>
+      </div>
+    </div>
+    <div class="field"><label>Party Size</label>
+      <select><option>1 Guest</option><option>2 Guests</option><option>3 Guests</option><option>4 Guests</option><option>5–6 Guests</option><option>7–10 Guests</option><option>Large Party (10+)</option></select>
+    </div>
+    <div class="field"><label>Special Requests</label><textarea rows="3" placeholder="Dietary requirements, occasion, seating preferences..."></textarea></div>
+    <button class="submit-btn">Request Reservation</button>
+  </div>
+</section>
+
+<!-- ══ FOOTER ══ -->
+<footer>
+  <div class="footer-brand">One Arabian Night</div>
+  <p class="footer-copy">© 2026 One Arabian Night Restaurant · 1001 Arabian Night Blvd, Seattle, WA 98101 · All rights reserved</p>
+  <div class="footer-links">
+    <a href="#">Instagram</a>
+    <a href="#">Facebook</a>
+    <a href="#">Yelp</a>
+  </div>
+</footer>
+
+
+  <script src="script.js"></script>
+</body>
+</html>
