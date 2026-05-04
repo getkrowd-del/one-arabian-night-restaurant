@@ -42,8 +42,19 @@
         
         /* ── HERO ── */
         .hero {  min-height: 50vh; display: flex; flex-direction: column;  align-items: center; justify-content: center;  position: relative; text-align: center; padding: 12rem 2rem 5rem;  background: radial-gradient(ellipse at center top, #2A1040 0%, #0F0A00 65%);  overflow: hidden;}
-        .hero-geo {  position: absolute; inset: 0; pointer-events: none; opacity: 0.04;  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Cpath d='M40 0L80 40L40 80L0 40Z' fill='none' stroke='%23C9952A' stroke-width='0.5'/%3E%3Cpath d='M40 20L60 40L40 60L20 40Z' fill='none' stroke='%23C9952A' stroke-width='0.5'/%3E%3C/svg%3E");}
-        .hero-glow { position: absolute; inset: 0; background: radial-gradient(circle at 20% 80%, rgba(201,149,42,0.05) 0%, transparent 50%), radial-gradient(circle at 80% 20%, rgba(74,30,112,0.25) 0%, transparent 50%); pointer-events: none; }
+        
+        /* Hero Background Elements */
+        .hero-geo {  position: absolute; inset: 0; pointer-events: none; opacity: 0.04;  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Cpath d='M40 0L80 40L40 80L0 40Z' fill='none' stroke='%23C9952A' stroke-width='0.5'/%3E%3Cpath d='M40 20L60 40L40 60L20 40Z' fill='none' stroke='%23C9952A' stroke-width='0.5'/%3E%3C/svg%3E"); z-index: 1;}
+        .hero-glow { position: absolute; inset: 0; background: radial-gradient(circle at 20% 80%, rgba(201,149,42,0.05) 0%, transparent 50%), radial-gradient(circle at 80% 20%, rgba(74,30,112,0.25) 0%, transparent 50%); pointer-events: none; z-index: 1;}
+        .hero-center-glow { position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%); width: 700px; height: 700px; background: radial-gradient(circle, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.05) 40%, transparent 70%); filter: blur(50px); border-radius: 50%; z-index: 1; pointer-events: none; }
+        
+        /* Logo Spotlight Styling */
+        .hero-logo-wrap { margin-bottom: 2.5rem; position: relative; z-index: 10; display: inline-flex; align-items: center; justify-content: center; }
+        .hero-logo-wrap::before { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 260px; height: 260px; background: radial-gradient(circle, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.3) 50%, transparent 75%); filter: blur(20px); z-index: -1; border-radius: 50%; pointer-events: none; }
+        .hero-logo-wrap img { position: relative; z-index: 2; max-height: 200px; }
+
+        /* Hero Content Styling */
+        .hero-eyebrow, .hero-title, .divider, .hero-sub { position: relative; z-index: 10; }
         .hero-eyebrow { font-weight: 300; font-size: 0.72rem; letter-spacing: 0.5em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.2rem; }
         .hero-title { font-family: 'Cinzel Decorative', serif; font-weight: 900; font-size: clamp(2.8rem, 6vw, 5.5rem); line-height: 1.05; color: var(--white); }
         .hero-title span { color: var(--gold-light); display: block; }
