@@ -3,13 +3,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&amp;family=Cinzel:wght@400;600;700&amp;family=Lato:ital,wght@0,300;0,400;1,300&amp;display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400;600;700&family=Lato:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
     
     
-    <!-- Meta and Payment Scripts -->
     
     
-    <script>(function(){  var slug='SrmkChunH';  function findEmail(){    var ids=['email','emailAddress','buyer-email','buyerEmail','user-email','userEmail','checkout-email','customer-email','contact-email'];    for(var i=0;i<ids.length;i++){var el=document.getElementById(ids[i]);if(el&&el.value&&el.value.includes('@'))return el.value.trim();}    var inputs=document.querySelectorAll('input[type="email"],input[name*="email"],input[placeholder*="email"],input[placeholder*="Email"]');    for(var j=0;j<inputs.length;j++){if(inputs[j].value&&inputs[j].value.includes('@'))return inputs[j].value.trim();}    return '';  }  function findName(){    var ids=['name','fullName','full-name','buyer-name','buyerName','customer-name','userName','user-name'];    for(var i=0;i<ids.length;i++){var el=document.getElementById(ids[i]);if(el&&el.value)return el.value.trim();}    var inputs=document.querySelectorAll('input[name*="name"]:not([name*="email"]):not([type="email"]),input[placeholder*="name"]:not([placeholder*="email"]):not([type="email"]),input[placeholder*="Name"]:not([type="email"])');    for(var j=0;j<inputs.length;j++){if(inputs[j].value)return inputs[j].value.trim();}    return '';  }  var __realPay=function(a,b,c,d,e){    var amountCents,email,productName,productDescription,customerName,quantity;    if(a&&typeof a==='object'){      amountCents=a.amountCents;email=a.email;productName=a.productName;      productDescription=a.productDescription||'';customerName=a.name||'';quantity=a.quantity||1;    }else{      amountCents=typeof a==='number'?a:0;productName=typeof b==='string'?b:'';      productDescription=typeof c==='string'?c:'';email='';customerName='';quantity=1;    }    if(!email)email=findEmail();    if(!customerName)customerName=findName();    if(!productName){alert('Product name is required.');return Promise.reject('no_product_name');}    if(!amountCents||amountCents<100){alert('Amount must be at least $1.00');return Promise.reject('invalid_amount');}    if(!email){alert('Please enter your email address.');return Promise.reject('no_email');}    var successBase=window.location.href.split('?')[0];    return fetch('/api/landing-pages/public/'+slug+'/payment/checkout',{      method:'POST',headers:{'Content-Type':'application/json'},      body:JSON.stringify({email:email,name:customerName,amountCents:amountCents,productName:productName,productDescription:productDescription,quantity:quantity,successUrl:successBase+'?payment=success&product='+encodeURIComponent(productName)+'&session_id={CHECKOUT_SESSION_ID}',cancelUrl:successBase+'?payment=cancelled'})    }).then(function(r){return r.json();}).then(function(d){      if(d.checkoutUrl){window.location.href=d.checkoutUrl;}      else{alert(d.error||'Failed to process payment');throw new Error(d.error);}    });  };  try{Object.defineProperty(window,'__processPayment',{value:__realPay,writable:false,configurable:false});}catch(e){window.__processPayment=__realPay;}  document.addEventListener('DOMContentLoaded',function(){    var urlParams=new URLSearchParams(window.location.search);    if(urlParams.get('payment')==='success'){      var pName=urlParams.get('product')||'your item';      var overlay=document.createElement('div');overlay.id='payment-success-overlay';      overlay.style.cssText='position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;z-index:999999;font-family:system-ui,-apple-system,sans-serif;';      overlay.innerHTML='<div style="background:white;border-radius:16px;padding:40px;max-width:420px;width:90%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.15);"><div style="width:64px;height:64px;border-radius:50%;background:#dcfce7;margin:0 auto 20px;display:flex;align-items:center;justify-content:center;"><svg width=\"32\" height=\"32\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#16a34a\" stroke-width=\"3\"><polyline points=\"20 6 9 17 4 12\"/></svg></div><h2 style="margin:0 0 12px;font-size:24px;font-weight:700;color:#111827;">Payment Successful!</h2><p style="margin:0 0 24px;color:#6b7280;font-size:16px;">Thank you for purchasing '+pName.replace(/</g,'&lt;').replace(/>/g,'&gt;')+'.</p><button onclick="document.getElementById(\'payment-success-overlay\').remove();window.history.replaceState({},\'\',window.location.pathname);" style="padding:12px 32px;font-size:16px;font-weight:600;background:#16a34a;color:white;border:none;border-radius:8px;cursor:pointer;">Continue</button></div>';      document.body.appendChild(overlay);    }  });})();</script>
+    <script>(function(){  var slug='SrmkChunH';  function findEmail(){    var ids=['email','emailAddress','buyer-email','buyerEmail','user-email','userEmail','checkout-email','customer-email','contact-email'];    for(var i=0;i<ids.length;i++){var el=document.getElementById(ids[i]);if(el&&el.value&&el.value.includes('@'))return el.value.trim();}    var inputs=document.querySelectorAll('input[type="email"],input[name*="email"],input[placeholder*="email"],input[placeholder*="Email"]');    for(var j=0;j<inputs.length;j++){if(inputs[j].value&&inputs[j].value.includes('@'))return inputs[j].value.trim();}    return '';  }  function findName(){    var ids=['name','fullName','full-name','buyer-name','buyerName','customer-name','userName','user-name'];    for(var i=0;i<ids.length;i++){var el=document.getElementById(ids[i]);if(el&&el.value)return el.value.trim();}    var inputs=document.querySelectorAll('input[name*="name"]:not([name*="email"]):not([type="email"]),input[placeholder*="name"]:not([placeholder*="email"]):not([type="email"]),input[placeholder*="Name"]:not([type="email"])');    for(var j=0;j<inputs.length;j++){if(inputs[j].value)return inputs[j].value.trim();}    return '';  }  var __realPay=function(a,b,c,d,e){    var amountCents,email,productName,productDescription,customerName,quantity;    if(a&&typeof a==='object'){      amountCents=a.amountCents;email=a.email;productName=a.productName;      productDescription=a.productDescription||'';customerName=a.name||'';quantity=a.quantity||1;    }else{      amountCents=typeof a==='number'?a:0;productName=typeof b==='string'?b:'';      productDescription=typeof c==='string'?c:'';email='';customerName='';quantity=1;    }    if(!email)email=findEmail();    if(!customerName)customerName=findName();    if(!productName){alert('Product name is required.');return Promise.reject('no_product_name');}    if(!amountCents||amountCents<100){alert('Amount must be at least $1.00');return Promise.reject('invalid_amount');}    if(!email){alert('Please enter your email address.');return Promise.reject('no_email');}    var successBase=window.location.href.split('?')[0];    return fetch('/api/landing-pages/public/'+slug+'/payment/checkout',{      method:'POST',headers:{'Content-Type':'application/json'},      body:JSON.stringify({email:email,name:customerName,amountCents:amountCents,productName:productName,productDescription:productDescription,quantity:quantity,successUrl:successBase+'?payment=success&product='+encodeURIComponent(productName)+'&session_id={CHECKOUT_SESSION_ID}',cancelUrl:successBase+'?payment=cancelled'})    }).then(function(r){return r.json();}).then(function(d){      if(d.checkoutUrl){window.location.href=d.checkoutUrl;}      else{alert(d.error||'Failed to process payment');throw new Error(d.error);}    });  };  try{Object.defineProperty(window,'__processPayment',{value:__realPay,writable:false,configurable:false});}catch(e){window.__processPayment=__realPay;}  document.addEventListener('DOMContentLoaded',function(){    var urlParams=new URLSearchParams(window.location.search);    if(urlParams.get('payment')==='success'){      var pName=urlParams.get('product')||'your item';      var overlay=document.createElement('div');overlay.id='payment-success-overlay';      overlay.style.cssText='position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;z-index:999999;font-family:system-ui,-apple-system,sans-serif;';      overlay.innerHTML='<div style="background:white;border-radius:16px;padding:40px;max-width:420px;width:90%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.15);"><div style="width:64px;height:64px;border-radius:50%;background:#dcfce7;margin:0 auto 20px;display:flex;align-items:center;justify-content:center;"><svg width=\"32\" height=\"32\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#16a34a\" stroke-width=\"3\"><polyline points=\"20 6 9 17 4 12\"/></svg></div><h2 style="margin:0 0 12px;font-size:24px;font-weight:700;color:#111827;">Payment Successful!</h2><p style="margin:0 0 24px;color:#6b7280;font-size:16px;">Thank you for purchasing '+pName.replace(/</g,'<').replace(/>/g,'>')+'.</p><button onclick="document.getElementById(\'payment-success-overlay\').remove();window.history.replaceState({},\'\',window.location.pathname);" style="padding:12px 32px;font-size:16px;font-weight:600;background:#16a34a;color:white;border:none;border-radius:8px;cursor:pointer;">Continue</button></div>';      document.body.appendChild(overlay);    }  });})();</script>
 
 <!-- SEO Meta Tags -->
 <title>Landing Page - May 4, 2026</title>
@@ -200,9 +199,7 @@
 </head>
 <body>
 
-<!-- FIXED NAV WRAPPER -->
 <div class="nav-wrapper">
-  <!-- TOP BAR -->
   <div class="topbar">
     <div class="topbar-social">
       <a href="#">IG</a>
@@ -213,11 +210,10 @@
     <div class="topbar-info">
       <a href="https://maps.google.com/?q=706+Varick+ST+Utica+NY">📍  706 Varick St, Utica, NY 13502</a>
       <a href="tel:+13155073888">📞 (315) 507-3888</a>
-      <a href="#reserve">✦ Reservations</a>
+      <a href="#reserve">✦ Contact</a>
     </div>
   </div>
 
-  <!-- MAIN NAV -->
   <nav class="nav-bottom">
     <div class="nav-inner">
       <ul class="nav-left">
@@ -248,7 +244,7 @@
       </div>
       <ul class="nav-right">
         <li><a href="/index.html#experience">Experience</a></li>
-        <li><a href="/index.html#reserve" class="nav-reserve-btn">Reserve</a></li>
+        <li><a href="/index.html#reserve" class="nav-reserve-btn">Contact</a></li>
       </ul>
       <button class="nav-hamburger" onclick="document.getElementById('mobileMenu').classList.toggle('open')">
         <span></span><span></span><span></span>
@@ -256,33 +252,34 @@
     </div>
   </nav>
 
-  <!-- MOBILE MENU -->
   <div class="mobile-menu" id="mobileMenu">
     <a href="index.html#story" onclick="document.getElementById('mobileMenu').classList.remove('open')">Our Story</a>
     <a href="#menu" onclick="document.getElementById('mobileMenu').classList.remove('open')">Menu</a>
     <a href="index.html#experience" onclick="document.getElementById('mobileMenu').classList.remove('open')">Experience</a>
-    <a href="#reserve" onclick="document.getElementById('mobileMenu').classList.remove('open')">Reserve a Table</a>
-    <a href="tel:+12065550199">📞 (206) 555-0199</a>
+    <a href="#reserve" onclick="document.getElementById('mobileMenu').classList.remove('open')">Contact</a>
+    <a href="tel:+12065550199">📞 (315) 507-3888</a>
   </div>
 </div>
 
-<!-- ══ HERO ══ -->
 <section class="hero">
+  <div class="hero-center-glow"></div>
   <div class="hero-geo"></div>
   <div class="hero-glow"></div>
+  
+  <div class="hero-logo-wrap">
+    <img src="https://onearabiannight.getkrowd.com/images/IMG_3208.png">
+  </div>
+  
   <p class="hero-eyebrow">Discover Our Flavors</p>
   <h1 class="hero-title">Our <span>Menu</span></h1>
   <div class="divider"><div class="diamond"></div></div>
   <p class="hero-sub" style="max-width: 600px; margin: 0 auto;">From hearty cold cut heroes to authentic Mediterranean platters cooked over a wood fire.</p>
 </section>
 
-<!-- ══ MENU SECTION ══ -->
 <section class="menu-sec" id="menu">
   
-  <!-- === FIRST MENU (INNER TRIFOLD) === -->
   <div class="menu-container">
     
-    <!-- LEFT COLUMN -->
     <div class="column col-left">
         <h2 class="text-white" style="color: #fff; text-shadow: 1px 1px 2px #ccc; margin-top: -20px; padding: 20px; background: var(--gold); text-align: center;">Cold Sandwiches</h2>
         
@@ -386,7 +383,7 @@
                 <span class="item-title">CS13. Falafel</span>
                 <div class="item-prices"><span class="item-price">$10.99</span></div>
             </div>
-            <div class="item-desc">Falafel, feta cheese, fries, lettuce, white &amp; hot sauce.</div>
+            <div class="item-desc">Falafel, feta cheese, fries, lettuce, white & hot sauce.</div>
         </div>
 
         <div class="menu-item">
@@ -400,7 +397,7 @@
         <div class="extras-section">
             <h2>Extras</h2>
             <div class="extras-list">
-                Make it toasted $1.00 &nbsp;|&nbsp; Add avocado $1.00 &nbsp;|&nbsp; Add bacon $1.50
+                Make it toasted $1.00  |  Add avocado $1.00  |  Add bacon $1.50
             </div>
             <div class="extras-desc">
                 All sandwiches are served with lettuce, tomatoes, onion, mayo, s/p, o/v.<br>
@@ -409,7 +406,6 @@
         </div>
     </div>
 
-    <!-- MIDDLE COLUMN -->
     <div class="column col-middle">
         <div class="middle-top">
             <h2 class="text-dark">Mediterranean</h2>
@@ -506,7 +502,6 @@
         </div>
     </div>
 
-    <!-- RIGHT COLUMN -->
     <div class="column col-right">
         <div style="background: var(--green-section); padding: 20px; margin: -20px -20px 20px -20px;">
             <h2 class="text-dark">Gyros</h2>
@@ -551,7 +546,7 @@
 
         <div class="menu-item">
             <div class="item-header">
-                <span class="item-title">B1. Bacon Egg &amp; Cheese</span>
+                <span class="item-title">B1. Bacon Egg & Cheese</span>
                 <div class="item-prices"><span class="item-price">$6.99</span><span class="item-price">$8.99</span></div>
             </div>
             <div class="item-desc">(Substitute: Roast Beef, Sausage, Turkey, Pastrami)</div>
@@ -567,7 +562,7 @@
 
         <div class="menu-item" style="margin-bottom: 20px;">
             <div class="item-header">
-                <span class="item-title">B3. Egg &amp; Cheese</span>
+                <span class="item-title">B3. Egg & Cheese</span>
                 <div class="item-prices"><span class="item-price">$4.99</span><span class="item-price">$6.99</span></div>
             </div>
         </div>
@@ -585,14 +580,11 @@
   </div>
 
 
-  <!-- Elegant visual separator between the two menus -->
   <div class="divider" style="margin: 80px auto;"><div class="diamond"></div></div>
 
 
-  <!-- === SECOND MENU (OUTER TRIFOLD) === -->
   <div class="menu-container second-menu">
       
-      <!-- LEFT COLUMN (Combos C1-C14) -->
       <div class="column col-left" style="background: #ffffff; padding: 25px;">
           <h2 class="text-purple">Combos</h2>
           <div style="background: var(--green-section); padding: 12px; font-weight: bold; text-align: center; margin-bottom: 25px; font-size: 0.9rem;">
@@ -717,7 +709,6 @@
           </div>
       </div>
 
-      <!-- MIDDLE COLUMN (Combos C15-C20, Desserts, Beverages, Smoothies) -->
       <div class="column col-middle" style="background: #fafafa; padding: 25px;">
           
           <div class="price-header" style="opacity: 0; margin-bottom: 30px;">
@@ -828,7 +819,6 @@
           </div>
       </div>
 
-      <!-- RIGHT COLUMN (Delivery & Info) -->
       <div class="column col-right" style="background: #ffffff; padding: 30px; display: flex; flex-direction: column; align-items: center; justify-content: center; border-left: 1px solid #f0f0f0;">
           
           <h3 style="font-family: var(--sans-font); font-size: 1.1rem; text-align: center; margin-bottom: 20px; font-weight: bold; letter-spacing: 0.05em;">
@@ -837,7 +827,6 @@
           
           <h2 class="text-purple" style="font-size: 2.5rem; margin-bottom: 25px; font-family: var(--script-font);">Delivery Partners</h2>
           
-          <!-- Delivery Partners Box -->
           <div style="background: #000; color: #fff; padding: 25px 20px; width: 100%; border-radius: 8px; margin-bottom: 40px; box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
               <div style="display: flex; justify-content: space-around; align-items: center; gap: 10px;">
                   <div style="color: #FF3008; font-weight: bold; font-size: 1rem; display: flex; flex-direction: column; align-items: center;">
@@ -851,7 +840,6 @@
               </div>
           </div>
 
-          <!-- Contact Information Box -->
           <div style="width: 100%; display: flex; flex-direction: column; gap: 12px;">
               <div style="background: #000; color: #fff; padding: 15px; border-radius: 8px; font-weight: bold; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; gap: 10px;">
                   📞 (315) 507-3888
@@ -870,12 +858,11 @@
 
 </section>
 
-<!-- ══ RESERVE ══ -->
 <section class="reserve" id="reserve">
   <div>
-    <div class="eyebrow">Reservations</div>
-    <h2 class="sec-title">Reserve Your<br><span>Evening</span></h2>
-    <p class="body-t">Join us for an unforgettable evening of flavour, culture, and warm Arabian hospitality. We welcome walk-ins, but reservations are recommended.</p>
+    <div class="eyebrow">Get In Touch</div>
+    <h2 class="sec-title">Contact<br><span>Us</span></h2>
+    <p class="body-t">We’d love to hear from you. Whether you have a question, need assistance, or want to connect with our team, we’re here to help. Reach out anytime and experience the warmth of our hospitality.</p>
     <div class="contact-block">
       <div class="contact-row">
         <span class="contact-icon">📍</span>
@@ -907,21 +894,12 @@
     </div>
     <div class="field"><label>Email</label><input type="email" placeholder="your@email.com"></div>
     <div class="field"><label>Phone</label><input type="tel" placeholder="(206) 555-0000"></div>
-    <div class="two-col">
-      <div class="field"><label>Date</label><input type="date"></div>
-      <div class="field"><label>Time</label>
-        <select><option value="">Select time</option><option>6:00 PM</option><option>6:30 PM</option><option>7:00 PM</option><option>7:30 PM</option><option>8:00 PM</option><option>8:30 PM</option><option>9:00 PM</option></select>
-      </div>
-    </div>
-    <div class="field"><label>Party Size</label>
-      <select><option>1 Guest</option><option>2 Guests</option><option>3 Guests</option><option>4 Guests</option><option>5–6 Guests</option><option>7–10 Guests</option><option>Large Party (10+)</option></select>
-    </div>
-    <div class="field"><label>Special Requests</label><textarea rows="3" placeholder="Dietary requirements, occasion, seating preferences..."></textarea></div>
-    <button class="submit-btn">Request Reservation</button>
+   
+    <div class="field"><label>Requests</label><textarea rows="3" placeholder="Dietary requirements, occasion, seating preferences..."></textarea></div>
+    <button class="submit-btn">Send</button>
   </div>
 </section>
 
-<!-- ══ FOOTER ══ -->
 <footer>
   <div class="footer-brand">One Arabian Night</div>
   <p class="footer-copy">© 2026 One Arabian Night Restaurant · All rights reserved</p>
