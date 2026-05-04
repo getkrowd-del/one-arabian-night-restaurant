@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://onearabiannight.getkrowd.com/menu/</loc>
+    <lastmod>2026-05-04T19:14:31.590Z</lastmod>
+    <changefreq>weekly</changefreq>
+  </url>
+  <url>
     <loc>https://onearabiannight.getkrowd.com/</loc>
-    <lastmod>2026-05-03T22:20:02.144Z</lastmod>
+    <lastmod>2026-05-04T18:58:41.470Z</lastmod>
     <changefreq>weekly</changefreq>
   </url>
 </urlset>
