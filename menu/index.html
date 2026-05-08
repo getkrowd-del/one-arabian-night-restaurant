@@ -1,21 +1,18 @@
 <!DOCTYPE html>
-<html lang="en"><head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400;600;700&family=Lato:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
-    
-    
-    
-    
-    <script>(function(){  var slug='SrmkChunH';  function findEmail(){    var ids=['email','emailAddress','buyer-email','buyerEmail','user-email','userEmail','checkout-email','customer-email','contact-email'];    for(var i=0;i<ids.length;i++){var el=document.getElementById(ids[i]);if(el&&el.value&&el.value.includes('@'))return el.value.trim();}    var inputs=document.querySelectorAll('input[type="email"],input[name*="email"],input[placeholder*="email"],input[placeholder*="Email"]');    for(var j=0;j<inputs.length;j++){if(inputs[j].value&&inputs[j].value.includes('@'))return inputs[j].value.trim();}    return '';  }  function findName(){    var ids=['name','fullName','full-name','buyer-name','buyerName','customer-name','userName','user-name'];    for(var i=0;i<ids.length;i++){var el=document.getElementById(ids[i]);if(el&&el.value)return el.value.trim();}    var inputs=document.querySelectorAll('input[name*="name"]:not([name*="email"]):not([type="email"]),input[placeholder*="name"]:not([placeholder*="email"]):not([type="email"]),input[placeholder*="Name"]:not([type="email"])');    for(var j=0;j<inputs.length;j++){if(inputs[j].value)return inputs[j].value.trim();}    return '';  }  var __realPay=function(a,b,c,d,e){    var amountCents,email,productName,productDescription,customerName,quantity;    if(a&&typeof a==='object'){      amountCents=a.amountCents;email=a.email;productName=a.productName;      productDescription=a.productDescription||'';customerName=a.name||'';quantity=a.quantity||1;    }else{      amountCents=typeof a==='number'?a:0;productName=typeof b==='string'?b:'';      productDescription=typeof c==='string'?c:'';email='';customerName='';quantity=1;    }    if(!email)email=findEmail();    if(!customerName)customerName=findName();    if(!productName){alert('Product name is required.');return Promise.reject('no_product_name');}    if(!amountCents||amountCents<100){alert('Amount must be at least $1.00');return Promise.reject('invalid_amount');}    if(!email){alert('Please enter your email address.');return Promise.reject('no_email');}    var successBase=window.location.href.split('?')[0];    return fetch('/api/landing-pages/public/'+slug+'/payment/checkout',{      method:'POST',headers:{'Content-Type':'application/json'},      body:JSON.stringify({email:email,name:customerName,amountCents:amountCents,productName:productName,productDescription:productDescription,quantity:quantity,successUrl:successBase+'?payment=success&product='+encodeURIComponent(productName)+'&session_id={CHECKOUT_SESSION_ID}',cancelUrl:successBase+'?payment=cancelled'})    }).then(function(r){return r.json();}).then(function(d){      if(d.checkoutUrl){window.location.href=d.checkoutUrl;}      else{alert(d.error||'Failed to process payment');throw new Error(d.error);}    });  };  try{Object.defineProperty(window,'__processPayment',{value:__realPay,writable:false,configurable:false});}catch(e){window.__processPayment=__realPay;}  document.addEventListener('DOMContentLoaded',function(){    var urlParams=new URLSearchParams(window.location.search);    if(urlParams.get('payment')==='success'){      var pName=urlParams.get('product')||'your item';      var overlay=document.createElement('div');overlay.id='payment-success-overlay';      overlay.style.cssText='position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;z-index:999999;font-family:system-ui,-apple-system,sans-serif;';      overlay.innerHTML='<div style="background:white;border-radius:16px;padding:40px;max-width:420px;width:90%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.15);"><div style="width:64px;height:64px;border-radius:50%;background:#dcfce7;margin:0 auto 20px;display:flex;align-items:center;justify-content:center;"><svg width=\"32\" height=\"32\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#16a34a\" stroke-width=\"3\"><polyline points=\"20 6 9 17 4 12\"/></svg></div><h2 style="margin:0 0 12px;font-size:24px;font-weight:700;color:#111827;">Payment Successful!</h2><p style="margin:0 0 24px;color:#6b7280;font-size:16px;">Thank you for purchasing '+pName.replace(/</g,'<').replace(/>/g,'>')+'.</p><button onclick="document.getElementById(\'payment-success-overlay\').remove();window.history.replaceState({},\'\',window.location.pathname);" style="padding:12px 32px;font-size:16px;font-weight:600;background:#16a34a;color:white;border:none;border-radius:8px;cursor:pointer;">Continue</button></div>';      document.body.appendChild(overlay);    }  });})();</script>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  
 
 <!-- SEO Meta Tags -->
-<title>Landing Page - May 4, 2026</title>
-<meta property="og:title" content="Landing Page - May 4, 2026" />
+<title>Menu</title>
+<meta property="og:title" content="Menu" />
 <meta property="og:type" content="website" />
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="Landing Page - May 4, 2026" />
+<meta name="twitter:title" content="Menu" />
 <!-- End SEO Meta Tags -->
 
 <script data-field-replace>
@@ -117,7 +114,7 @@
   function run(){
     if(contactId){
       var xhr=new XMLHttpRequest();
-      xhr.open('GET','https://paymegpt.com/api/landing/context/'+encodeURIComponent(contactId)+'?page_id=3763');
+      xhr.open('GET','https://paymegpt.com/api/landing/context/'+encodeURIComponent(contactId)+'?page_id=3874');
       xhr.onload=function(){
         if(xhr.status===200){
           try{
@@ -144,7 +141,7 @@
 </script>
 <script data-payment>
 (function(){
-  var slug='NVj56zVZ6J';
+  var slug='VcE2kkK';
   var apiBase='https://paymegpt.com';
   function findEmail(){
     var ids=['email','emailAddress','buyer-email','buyerEmail','user-email','userEmail','checkout-email','customer-email','contact-email'];
@@ -199,725 +196,66 @@
 </head>
 <body>
 
-<div class="nav-wrapper" data-section="navbar">
-  <div class="topbar">
-    <div class="topbar-social">
-      <a href="https://www.instagram.com/onearabianutica/">IG</a>
-      <a href="https://www.facebook.com/profile.php?id=61560570801710">FB</a>
-      <a href="https://www.yelp.com/biz/one-arabian-night-marib-restaurant-utica">Yelp</a>
-    </div>
-    <div class="topbar-divider"></div>
-    <div class="topbar-info">
-      <a href="https://maps.google.com/?q=706+Varick+St+Utica+NY">📍 706 Varick St, Utica, NY 13502</a>
-      <a href="tel:+13155073888">📞 (315) 507-3888</a>
-      <a href="#contact">✦ Contact</a>
-    </div>
-  </div>
-  <nav class="nav-bottom">
-    <div class="nav-inner">
-      <ul class="nav-left">
-        <li><a href="https://paymegpt.com/p/SrmkChunH">Home</a></li>
-        <li><a href="https://paymegpt.com/p/NVj56zVZ6J">Menu</a></li>
-      </ul>
-      <div class="nav-logo-wrap">
-        <a href="https://paymegpt.com/p/SrmkChunH">
-          <svg class="nav-logo-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-            <path d="M100 20 C60 20,30 55,30 95 L30 160 L170 160 L170 95 C170 55,140 20,100 20Z" fill="none" stroke="#C9952A" stroke-width="2.5"/>
-            <path d="M100 35 C68 35,48 62,48 95 L48 148 L152 148 L152 95 C152 62,132 35,100 35Z" fill="none" stroke="#E8C46A" stroke-width="1"/>
-            <circle cx="100" cy="18" r="5" fill="#C9952A"/>
-            <line x1="38" y1="115" x2="22" y2="115" stroke="#C9952A" stroke-width="2"/>
-            <line x1="22" y1="108" x2="22" y2="122" stroke="#C9952A" stroke-width="2"/>
-            <line x1="18" y1="108" x2="18" y2="122" stroke="#C9952A" stroke-width="2"/>
-            <line x1="26" y1="108" x2="26" y2="122" stroke="#C9952A" stroke-width="2"/>
-            <line x1="162" y1="115" x2="178" y2="115" stroke="#C9952A" stroke-width="2"/>
-            <line x1="178" y1="108" x2="178" y2="122" stroke="#C9952A" stroke-width="2"/>
-            <line x1="174" y1="108" x2="174" y2="122" stroke="#C9952A" stroke-width="2"/>
-            <line x1="182" y1="108" x2="182" y2="122" stroke="#C9952A" stroke-width="2"/>
-            <text x="100" y="90" font-family="Georgia,serif" font-size="17" font-weight="900" fill="#C9952A" text-anchor="middle">ONE</text>
-            <text x="100" y="112" font-family="Georgia,serif" font-size="13" font-weight="700" fill="#E8C46A" text-anchor="middle">ARABIAN</text>
-            <text x="100" y="131" font-family="Georgia,serif" font-size="10" fill="#C9952A" text-anchor="middle">NIGHT</text>
-            <line x1="60" y1="146" x2="140" y2="146" stroke="#C9952A" stroke-width="1.5"/>
-            <text x="100" y="163" font-family="Arial,sans-serif" font-size="7" fill="#E8C46A" text-anchor="middle" letter-spacing="4">RESTAURANT</text>
-          </svg>
-        </a>
-      </div>
-      <ul class="nav-right">
-        <li><a href="#contact" class="nav-reserve-btn">Contact</a></li>
-      </ul>
-      <button class="nav-hamburger" onclick="document.getElementById('mobileMenu').classList.toggle('open')">
-        <span></span><span></span><span></span>
-      </button>
-    </div>
-  </nav>
-  <div class="mobile-menu" id="mobileMenu">
-    <a href="https://paymegpt.com/p/SrmkChunH" onclick="document.getElementById('mobileMenu').classList.remove('open')">Home</a>
-    <a href="https://paymegpt.com/p/NVj56zVZ6J" onclick="document.getElementById('mobileMenu').classList.remove('open')">Menu</a>
-    <a href="#contact" onclick="document.getElementById('mobileMenu').classList.remove('open')">Contact Us</a>
-    <a href="tel:+13155073888">📞 (315) 507-3888</a>
-    <a href="https://maps.google.com/?q=706+Varick+St,+Utica,+NY+13502">📍 Get Directions</a>
-  </div>
-</div>
+  <p class="label">Coding Agent · Quick Start</p>
 
-<section class="hero" data-section="hero">
-  <div class="hero-center-glow"></div>
-  <div class="hero-geo"></div>
-  <div class="hero-glow"></div>
+  <h1>Start building.<br />No code required.</h1>
+
+  <p class="sub">
+    Describe what you want. The Coding Agent writes, previews, and publishes it — all from one screen.
+  </p>
+
+  <a class="cta" href="#">Open the Coding Agent →</a>
+
+  <hr />
+
+  <h2>How to use it</h2>
+
+  <div class="step">
+    <div class="step-num">1</div>
+    <div class="step-body">
+      <strong>Tap "Create" to start a new project</strong>
+      <p>Hit the Create button at the top right. Name your project — this saves your work so you can edit and republish anytime.</p>
+    </div>
+  </div>
+  <div class="step">
+    <div class="step-num">2</div>
+    <div class="step-body">
+      <strong>Choose a model and describe what you want</strong>
+      <p>Pick a model — faster ones for quick drafts, smarter ones for complex builds. Type your idea in plain English and hit Generate.</p>
+    </div>
+  </div>
+  <div class="step">
+    <div class="step-num">3</div>
+    <div class="step-body">
+      <strong>Review your page and refine it</strong>
+      <p>Your page shows up right away. Tell it what to change in plain words and it updates on the spot — keep going until you're happy with it.</p>
+    </div>
+  </div>
+  <div class="step">
+    <div class="step-num">4</div>
+    <div class="step-body">
+      <strong>Hit "Publish" to go live</strong>
+      <p>Your page gets a shareable link right away. You can come back anytime to make changes and republish.</p>
+    </div>
+  </div>
+  <div class="step">
+    <div class="step-num">5</div>
+    <div class="step-body">
+      <strong>Connect your own domain (optional)</strong>
+      <p>Open <strong>Page Settings</strong> at the top of the editor. From there you can push your page to GitHub Pages for free hosting, or connect your own custom domain — no technical setup needed on your end.</p>
+    </div>
+  </div>
+
+  <div class="callout">
+    <strong>Tip:</strong> Always tap <strong>Create</strong> before generating. Without a saved project, your page can't be published or edited later.
+  </div>
+
+  <footer>
+    <p>© <span id="year"></span> Coding Agent</p>
+  </footer>
+
   
-  <div class="hero-logo-wrap">
-    <img src="https://onearabiannight.getkrowd.com/images/IMG_3208.png">
-  </div>
-  
-  <p class="hero-eyebrow">Discover Our Flavors</p>
-  <h1 class="hero-title">Our <span>Menu</span></h1>
-  <div class="divider"><div class="diamond"></div></div>
-  <p class="hero-sub" style="max-width: 600px; margin: 0 auto;">From hearty cold cut heroes to authentic Mediterranean platters cooked over a wood fire.</p>
-</section>
-
-<section class="menu-sec" id="menu" data-section="menu">
-  
-  <div class="menu-container">
-    
-    <div class="column col-left">
-        <h2 class="text-white" style="color: #fff; text-shadow: 1px 1px 2px #ccc; margin-top: -20px; padding: 20px; background: var(--gold); text-align: center;">Cold Sandwiches</h2>
-        
-        <div class="price-header">
-            <span>Roll</span>
-            <span>Hero</span>
-        </div>
-
-        <div class="menu-item">
-            <div class="item-header">
-                <span class="item-title">CS1. Fat Boy</span>
-                <div class="item-prices"><span class="item-price">$10.99</span><span class="item-price">$13.99</span></div>
-            </div>
-            <div class="item-desc">Roast beef, turkey, swiss cheese, russian dressing.</div>
-        </div>
-
-        <div class="menu-item">
-            <div class="item-header">
-                <span class="item-title">CS2. The Gentle Bull</span>
-                <div class="item-prices"><span class="item-price">$10.49</span><span class="item-price">$13.49</span></div>
-            </div>
-            <div class="item-desc">Roast beef, cheddar cheese, lettuce, horseradish</div>
-        </div>
-
-        <div class="menu-item">
-            <div class="item-header">
-                <span class="item-title">CS3. Veggie Delight</span>
-                <div class="item-prices"><span class="item-price">$8.99</span><span class="item-price">$11.99</span></div>
-            </div>
-            <div class="item-desc">pepper jack cheese, avocado, roasted peppers, lettuce, tomatoes, pickles, mayo, o/v.</div>
-        </div>
-
-        <div class="menu-item">
-            <div class="item-header">
-                <span class="item-title">CS4. El Chapo</span>
-                <div class="item-prices"><span class="item-price">$10.99</span><span class="item-price">$13.99</span></div>
-            </div>
-            <div class="item-desc">Sausalito turkey, avocado, cheddar cheese, lettuce, banana peppers, mayo, s/p, o/v.</div>
-        </div>
-
-        <div class="menu-item">
-            <div class="item-header">
-                <span class="item-title">CS5. The American Dream</span>
-                <div class="item-prices"><span class="item-price">$10.99</span><span class="item-price">$13.99</span></div>
-            </div>
-            <div class="item-desc">Ham and turkey with Swiss cheese, lettuce, tomato, salt, pepper, mayo, oil, and vinegar</div>
-        </div>
-
-        <div class="menu-item">
-            <div class="item-header">
-                <span class="item-title">CS6. Flaming Dragon</span>
-                <div class="item-prices"><span class="item-price">$10.99</span><span class="item-price">$13.99</span></div>
-            </div>
-            <div class="item-desc">Buffalo chicken, provolone cheese, avocado, lettuce, mayo, s/p, o/v.</div>
-        </div>
-
-        <h2 class="text-purple" style="margin-top: 30px;">Wraps</h2>
-
-        <div class="menu-item">
-            <div class="item-header">
-                <span class="item-title">CS8. Buffalo Chicken</span>
-                <div class="item-prices"><span class="item-price">$10.99</span></div>
-            </div>
-            <div class="item-desc">Buffalo chicken, pepper Jack, lettuce, tomatoes, ranch</div>
-        </div>
-
-        <div class="menu-item">
-            <div class="item-header">
-                <span class="item-title">CS9. The Notorious Proper</span>
-                <div class="item-prices"><span class="item-price">$10.99</span></div>
-            </div>
-            <div class="item-desc">Grilled chicken, onions, peppers, rice, s/p, ranch.</div>
-        </div>
-
-        <div class="menu-item">
-            <div class="item-header">
-                <span class="item-title">CS10. The Flat Earth</span>
-                <div class="item-prices"><span class="item-price">$10.99</span></div>
-            </div>
-            <div class="item-desc">Chicken cutlet, muenster cheese, lettuce, tomatoes, onions, mayo.</div>
-        </div>
-
-        <div class="menu-item">
-            <div class="item-header">
-                <span class="item-title">CS11. Tuna</span>
-                <div class="item-prices"><span class="item-price">$10.99</span></div>
-            </div>
-            <div class="item-desc">Tuna, lettuce, tomatoes, mayo, s/p, o/v.</div>
-        </div>
-
-        <div class="menu-item">
-            <div class="item-header">
-                <span class="item-title">CS12. Chipotle</span>
-                <div class="item-prices"><span class="item-price">$11.99</span></div>
-            </div>
-            <div class="item-desc">Grilled chicken, bacon, chipotle cheese, avocado, lettuce, tomatoes, chipotle mayo</div>
-        </div>
-
-        <div class="menu-item">
-            <div class="item-header">
-                <span class="item-title">CS13. Falafel</span>
-                <div class="item-prices"><span class="item-price">$10.99</span></div>
-            </div>
-            <div class="item-desc">Falafel, feta cheese, fries, lettuce, white & hot sauce.</div>
-        </div>
-
-        <div class="menu-item">
-            <div class="item-header">
-                <span class="item-title">CS14. Veggie Lover</span>
-                <div class="item-prices"><span class="item-price">$9.99</span></div>
-            </div>
-            <div class="item-desc">Roasted peppers, pepper jack, lettuce, tomatoes, pickles, cucumbers, spicy mustard.</div>
-        </div>
-
-        <div class="extras-section">
-            <h2>Extras</h2>
-            <div class="extras-list">
-                Make it toasted $1.00  |  Add avocado $1.00  |  Add bacon $1.50
-            </div>
-            <div class="extras-desc">
-                All sandwiches are served with lettuce, tomatoes, onion, mayo, s/p, o/v.<br>
-                Add extra: banana pepper, sweet pepper, hot pepper, jalapeno, mushrooms
-            </div>
-        </div>
-    </div>
-
-    <div class="column col-middle">
-        <div class="middle-top">
-            <h2 class="text-dark">Mediterranean</h2>
-            <div class="notice">All Mediterranean platters are served with hot sauce, white sauce, salad</div>
-            
-            <div class="grid-2col" style="margin-bottom: 20px;">
-                <div class="item-header"><span class="item-title" style="font-weight: bold;">Chicken Over Rice</span><span class="item-price">$13.99</span></div>
-                <div class="item-header"><span class="item-title" style="font-weight: bold;">Steak over Rice</span><span class="item-price">$15.99</span></div>
-                <div class="item-header"><span class="item-title" style="font-weight: bold;">Lamb Over Rice</span><span class="item-price">$13.99</span></div>
-                <div class="item-header"><span class="item-title" style="font-weight: bold;">Shrimp over Rice</span><span class="item-price">$12.99</span></div>
-                <div class="item-header"><span class="item-title" style="font-weight: bold;">Falafel Over Rice</span><span class="item-price">$11.99</span></div>
-            </div>
-           
-        </div>
-
-        <div class="middle-bottom">
-        	 <div align="center"><img src="https://onearabiannight.getkrowd.com/images/med.png"></div>
-            <h2 class="text-white">Rotisserie Chicken with Rice</h2>
-            <div class="notice" style="color: #ccc;">All Mediterranean platters are served with hot sauce, white sauce, salad</div>
-            
-            <div class="menu-item" style="margin-bottom: 5px;">
-                <div class="item-header">
-                    <span class="item-title">Whole</span>
-                    <div class="item-prices"><span class="item-price">$29.99</span></div>
-                </div>
-            </div>
-            <div class="menu-item">
-                <div class="item-header">
-                    <span class="item-title">Half</span>
-                    <div class="item-prices"><span class="item-price">$16.99</span></div>
-                </div>
-            </div>
-
-            <h2 class="text-white" style="margin-top: 30px;">Grilled Sandwiches</h2>
-            
-            <div class="price-header">
-                <span>Roll</span>
-                <span>Hero</span>
-            </div>
-
-            <div class="menu-item">
-                <div class="item-header">
-                    <span class="item-title">19. BBQ Bill</span>
-                    <div class="item-prices"><span class="item-price">$9.99</span><span class="item-price">$12.99</span></div>
-                </div>
-                <div class="item-desc">Roast beef, bacon, melted cheese, BBQ sauce</div>
-            </div>
-
-            <div class="menu-item">
-                <div class="item-header">
-                    <span class="item-title">20. Buffalo Hero</span>
-                    <div class="item-prices"><span class="item-price">$8.99</span><span class="item-price">$10.99</span></div>
-                </div>
-                <div class="item-desc">Buffalo chicken, jalapeno, mozzarella, cheese, blue cheese.</div>
-            </div>
-
-            <div class="menu-item">
-                <div class="item-header">
-                    <span class="item-title">21. Uncle Jack</span>
-                    <div class="item-prices"><span class="item-price">$8.99</span><span class="item-price">$10.99</span></div>
-                </div>
-                <div class="item-desc">Seasoned steak bacon, peppers, onions, cheddar cheese, chipotle sauce.</div>
-            </div>
-
-            <div class="menu-item">
-                <div class="item-header">
-                    <span class="item-title">22. What's The Rock Cooking</span>
-                    <div class="item-prices"><span class="item-price">$7.99</span><span class="item-price">$10.99</span></div>
-                </div>
-                <div class="item-desc">Oven gold turkey, provolone cheese, lettuce, tomatoes, onions, mayo</div>
-            </div>
-
-            <div class="menu-item">
-                <div class="item-header">
-                    <span class="item-title">23. Captain Sparrow</span>
-                    <div class="item-prices"><span class="item-price">$8.99</span><span class="item-price">$11.99</span></div>
-                </div>
-                <div class="item-desc">Roast beef cheddar cheese, raw onion horseradish, mustard.</div>
-            </div>
-
-            <div class="menu-item">
-                <div class="item-header">
-                    <span class="item-title">24. Tuna Melt</span>
-                    <div class="item-prices"><span class="item-price">$7.99</span><span class="item-price">$10.99</span></div>
-                </div>
-                <div class="item-desc">Tuna, cheese, lettuce, tomatoes.</div>
-            </div>
-
-            <div class="menu-item">
-                <div class="item-header">
-                    <span class="item-title">25. Heart Stopper</span>
-                    <div class="item-prices"><span class="item-price">$11.99</span><span class="item-price">$14.99</span></div>
-                </div>
-                <div class="item-desc">Chicken cutlet, cheddar, bacon, lettuce, tomatoes</div>
-            </div>
-        </div>
-    </div>
-
-    <div class="column col-right">
-        <div style="background: var(--green-section); padding: 5px; margin: 0px -20px 20px -20px;">
-            <h2 class="text-dark">Gyros</h2>
-            <div class="notice">All Mediterranean platters are served with hot sauce, white sauce, salad</div>
-            
-            <div class="menu-item" style="margin-bottom: 10px;">
-                <div class="item-header">
-                    <span class="item-title">Chicken Gyro</span>
-                    <div class="item-prices"><span class="item-price">$9.99</span></div>
-                </div>
-            </div>
-            <div class="menu-item" style="margin-bottom: 10px;">
-                <div class="item-header">
-                    <span class="item-title">Lamb Gyro</span>
-                    <div class="item-prices"><span class="item-price">$11.99</span></div>
-                </div>
-            </div>
-            <div class="menu-item">
-                <div class="item-header">
-                    <span class="item-title">Falafel Gyro</span>
-                    <div class="item-prices"><span class="item-price">$8.99</span></div>
-                </div>
-            </div>
-             <div align="center"><img src="https://onearabiannight.getkrowd.com/images/birt.png"></div>
-        </div>
-
-        <h2 class="text-purple">Appetizers</h2>
-        
-        <div class="grid-2col" style="margin-bottom: 30px;">
-            <div class="item-header"><span class="item-title">A1. French Fries</span><span class="item-price">$3.49</span></div>
-            <div class="item-header"><span class="item-title">A4. Potato Wedges</span><span class="item-price">$5.99</span></div>
-            <div class="item-header"><span class="item-title">A2. Onion Rings</span><span class="item-price">$4.99</span></div>
-            <div class="item-header"><span class="item-title">A5. Waffle Fries</span><span class="item-price">$5.99</span></div>
-            <div class="item-header"><span class="item-title">A3. Curly Fries</span><span class="item-price">$4.99</span></div>
-      
-        </div>
- <div align="center"><img src="https://onearabiannight.getkrowd.com/images/fry.png"></div>
-        <h2 class="text-purple">Breakfast</h2>
-        
-        <div class="price-header">
-            <span>Roll</span>
-            <span>Hero</span>
-        </div>
-
-        <div class="menu-item">
-            <div class="item-header">
-                <span class="item-title">B1. Bacon Egg & Cheese</span>
-                <div class="item-prices"><span class="item-price">$6.99</span><span class="item-price">$8.99</span></div>
-            </div>
-            <div class="item-desc">(Substitute: Roast Beef, Sausage, Turkey, Pastrami)</div>
-        </div>
-
-        <div class="menu-item">
-            <div class="item-header">
-                <span class="item-title">B2. Plain Bagel w/ Cream Cheese</span>
-                <div class="item-prices"><span class="item-price">$6.99</span><span class="item-price">$8.99</span></div>
-            </div>
-            <div class="item-desc">(Substitute Plain for Everything Bagel / Cinnamon Raisin)</div>
-        </div>
-
-        <div class="menu-item" style="margin-bottom: 20px;">
-            <div class="item-header">
-                <span class="item-title">B3. Egg & Cheese</span>
-                <div class="item-prices"><span class="item-price">$4.99</span><span class="item-price">$6.99</span></div>
-            </div>
-        </div>
-
-        <div class="grid-2col">
-            <div class="item-header"><span class="item-title" style="font-weight: bold;">B4. Hummus</span><span class="item-price">$9.99</span></div>
-            <div class="item-header"><span class="item-title" style="font-weight: bold;">B8. Pancake</span><span class="item-price">$8.99</span></div>
-            <div class="item-header"><span class="item-title" style="font-weight: bold;">B5. Fagsolia</span><span class="item-price">$11.99</span></div>
-            <div class="item-header"><span class="item-title" style="font-weight: bold;">B9. Avocado Toast</span><span class="item-price">$7.99</span></div>
-            <div class="item-header"><span class="item-title" style="font-weight: bold;">B6. Shakshuka</span><span class="item-price">$11.99</span></div>
-        </div>
-
-    </div>
-
-  </div>
-
-
-  <div class="divider" style="margin: 80px auto;"><div class="diamond"></div></div>
-
-
-  <div class="menu-container second-menu">
-      
-      <div class="column col-left" style="background: #ffffff; padding: 25px;">
-          <h2 class="text-purple">Combos</h2>
-          <div style="background: var(--green-section); padding: 12px; font-weight: bold; text-align: center; margin-bottom: 25px; font-size: 0.9rem;">
-              All combos are served with fries and a can of soda
-          </div>
-          
-          <div class="price-header">
-              <span style="background-color: var(--purple);">Only</span>
-              <span style="background-color: var(--purple);">Combo</span>
-          </div>
-
-          <div class="menu-item">
-              <div class="item-header">
-                  <span class="item-title">C1. Cheeseburger</span>
-                  <div class="item-prices"><span class="item-price">$8.99</span><span class="item-price">$11.99</span></div>
-              </div>
-              <div class="item-desc">One patty, cheese, lettuce, tomato, onion, pickle, mayo, ketchup, mustard.</div>
-          </div>
-
-          <div class="menu-item">
-              <div class="item-header">
-                  <span class="item-title">C2. Double Cheeseburger</span>
-                  <div class="item-prices"><span class="item-price">$10.99</span><span class="item-price">$13.99</span></div>
-              </div>
-              <div class="item-desc">Two patty, cheese, lettuce, tomato, onion, pickle, mayo, ketchup, mustard.</div>
-          </div>
-
-          <div class="menu-item">
-              <div class="item-header">
-                  <span class="item-title">C3. Bacon Cheeseburger</span>
-                  <div class="item-prices"><span class="item-price">$9.99</span><span class="item-price">$12.99</span></div>
-              </div>
-              <div class="item-desc">One patty, cheese, bacon, pickle, mayo, ketchup, mustard.</div>
-          </div>
-
-          <div class="menu-item">
-              <div class="item-header">
-                  <span class="item-title">C4. Bacon Double Cheeseburger</span>
-                  <div class="item-prices"><span class="item-price">$11.99</span><span class="item-price">$14.99</span></div>
-              </div>
-              <div class="item-desc">Two patty, cheese, bacon, pickle, mayo, ketchup, mustard.</div>
-          </div>
-
-          <div class="menu-item">
-              <div class="item-header">
-                  <span class="item-title">C5. Monster Burger</span>
-                  <div class="item-prices"><span class="item-price">$13.99</span><span class="item-price">$16.99</span></div>
-              </div>
-              <div class="item-desc">One patty, cheese, philly steak, pickle, mayo, mustard, ketchup.</div>
-          </div>
-
-          <div class="menu-item">
-              <div class="item-header">
-                  <span class="item-title">C6. Double Monster Burger</span>
-                  <div class="item-prices"><span class="item-price">$15.99</span><span class="item-price">$18.99</span></div>
-              </div>
-              <div class="item-desc">Two patty, double cheese, philly steak, pickle, mayo, mustard, ketchup.</div>
-          </div>
-
-          <div class="menu-item">
-              <div class="item-header">
-                  <span class="item-title">C7. Chopped Cheese</span>
-                  <div class="item-prices"><span class="item-price">$10.99</span><span class="item-price">$13.99</span></div>
-              </div>
-              <div class="item-desc">Ground beef, cheese, onions, lettuce, tomatoes, peppers, mayo.</div>
-          </div>
-
-          <div class="menu-item">
-              <div class="item-header">
-                  <span class="item-title">C8. Philly Sandwich</span>
-                  <div class="item-prices"><span class="item-price">$10.99</span><span class="item-price">$13.99</span></div>
-              </div>
-              <div class="item-desc">Seasoned steak, cheese, mayo, peppers, onions.</div>
-          </div>
-
-          <div class="menu-item">
-              <div class="item-header">
-                  <span class="item-title">C9. Chicken Sandwich</span>
-                  <div class="item-prices"><span class="item-price">$7.99</span><span class="item-price">$10.99</span></div>
-              </div>
-              <div class="item-desc">Chicken patty, lettuce, tomato, mayo, ketchup.</div>
-          </div>
-
-          <div class="menu-item">
-              <div class="item-header">
-                  <span class="item-title">C10. Spicy Chicken Sandwich</span>
-                  <div class="item-prices"><span class="item-price">$7.99</span><span class="item-price">$10.99</span></div>
-              </div>
-              <div class="item-desc">Chicken, lettuce, tomato, mayo, ketchup, spicy sauce.</div>
-          </div>
-
-          <div class="menu-item">
-              <div class="item-header">
-                  <span class="item-title">C11. Fish Sandwich</span>
-                  <div class="item-prices"><span class="item-price">$7.99</span><span class="item-price">$10.99</span></div>
-              </div>
-              <div class="item-desc">Tomato, lettuce, tartar sauce.</div>
-          </div>
-
-          <div class="menu-item">
-              <div class="item-header">
-                  <span class="item-title">C12. BLT</span>
-                  <div class="item-prices"><span class="item-price">$10.99</span><span class="item-price">$13.99</span></div>
-              </div>
-              <div class="item-desc">Bacon, lettuce, tomato, mayo.</div>
-          </div>
-
-          <div class="menu-item">
-              <div class="item-header">
-                  <span class="item-title">C13. Chicken Quesadilla</span>
-                  <div class="item-prices"><span class="item-price">$11.99</span><span class="item-price">$14.99</span></div>
-              </div>
-              <div class="item-desc">Grilled chicken, cheese, sour cream.</div>
-          </div>
-
-          <div class="menu-item">
-              <div class="item-header">
-                  <span class="item-title">C14. Steak Quesadilla</span>
-                  <div class="item-prices"><span class="item-price">$9.99</span><span class="item-price">$12.99</span></div>
-              </div>
-              <div class="item-desc">Seasoned steak, cheese, sour cream, onion, pepper.</div>
-          </div>
-      </div>
-
-      <div class="column col-middle" style="background: #fafafa; padding: 25px;">
-          
-          <div class="price-header" style="opacity: 0; margin-bottom: 30px;">
-              <span>Only</span><span>Combo</span>
-          </div>
-
-          <div class="menu-item">
-              <div class="item-header">
-                  <span class="item-title">C15. Fried Shrimp</span>
-                  <div class="item-prices"><span class="item-price">$9.99</span><span class="item-price">$12.99</span></div>
-              </div>
-          </div>
-
-          <div class="menu-item">
-              <div class="item-header">
-                  <span class="item-title">C16. Chicken Tenders</span>
-                  <div class="item-prices"><span class="item-price">$7.99</span><span class="item-price">$10.99</span></div>
-              </div>
-              <div class="item-desc">With dipping sauce.</div>
-          </div>
-
-          <div class="menu-item">
-              <div class="item-header">
-                  <span class="item-title">C17. Chicken Nuggets</span>
-                  <div class="item-prices"><span class="item-price">$7.99</span><span class="item-price">$10.99</span></div>
-              </div>
-              <div class="item-desc">With dipping sauce.</div>
-          </div>
-
-          <div class="menu-item">
-              <div class="item-header">
-                  <span class="item-title">C18. Popcorn Chicken</span>
-                  <div class="item-prices"><span class="item-price">$7.99</span><span class="item-price">$10.99</span></div>
-              </div>
-              <div class="item-desc">With dipping sauce.</div>
-          </div>
-
-          <div class="menu-item">
-              <div class="item-header">
-                  <span class="item-title">C19. Mozzarella Sticks</span>
-                  <div class="item-prices"><span class="item-price">$5.99</span><span class="item-price">$8.99</span></div>
-              </div>
-              <div class="item-desc">With marinara sauce.</div>
-          </div>
-
-          <div class="menu-item">
-              <div class="item-header">
-                  <span class="item-title">C20. Tacos</span>
-                  <div class="item-prices"><span class="item-price">$10.99</span><span class="item-price">$13.99</span></div>
-              </div>
-              <div class="item-desc">Choice of meat, choice of cheese 3 tacos.</div>
-        
-         <div align="center"><img style="max-width: 200px;" src="https://onearabiannight.getkrowd.com/images/newburger.png"></div>
-
-          </div>
-
-          <h2 class="text-purple" style="margin-top: 40px;">Desserts</h2>
-          
-          <div class="menu-item" style="margin-bottom: 10px;">
-              <div class="item-header">
-                  <span class="item-title">01. Fettah Semn</span>
-                  <div class="item-prices"><span class="item-price" style="width: auto;">$12.00</span></div>
-              </div>
-          </div>
-          <div class="menu-item" style="margin-bottom: 10px;">
-              <div class="item-header">
-                  <span class="item-title">02. Fettah Dates</span>
-                  <div class="item-prices"><span class="item-price" style="width: auto;">$12.00</span></div>
-              </div>
-          </div>
-          <div class="menu-item">
-              <div class="item-header">
-                  <span class="item-title">03. Baklava</span>
-                  <div class="item-prices"><span class="item-price" style="width: auto;">$5.95</span></div>
-              </div>
-               <div align="center"><img style="max-width: 100px;" src="https://onearabiannight.getkrowd.com/images/sandwich.png"></div>
-
-          </div>
-
-          <h2 class="text-purple" style="margin-top: 10px;">Beverage</h2>
-          <div class="menu-item">
-              <div class="item-header">
-                  <span class="item-title">Adeni Tea (8oz)</span>
-                  <div class="item-prices"><span class="item-price" style="width: auto;">$3.99</span></div>
-              </div>
-          </div>
-
-          <h2 class="text-purple" style="margin-top: 40px;">Smoothies</h2>
-          
-          <div class="menu-item" style="margin-bottom: 10px;">
-              <div class="item-header">
-                  <span class="item-title">Strawberry Banana Smoothie</span>
-                  <div class="item-prices"><span class="item-price" style="width: auto;">$10.99</span></div>
-              </div>
-          </div>
-          <div class="menu-item" style="margin-bottom: 10px;">
-              <div class="item-header">
-                  <span class="item-title">Strawberry Mango Smoothie</span>
-                  <div class="item-prices"><span class="item-price" style="width: auto;">$10.99</span></div>
-              </div>
-          </div>
-          <div class="menu-item" style="margin-bottom: 10px;">
-              <div class="item-header">
-                  <span class="item-title">Mixed Berries Smoothie</span>
-                  <div class="item-prices"><span class="item-price" style="width: auto;">$10.99</span></div>
-              </div>
-          </div>
-          <div class="menu-item">
-              <div class="item-header">
-                  <span class="item-title">Yemeni Lemonade</span>
-                  <div class="item-prices"><span class="item-price" style="width: auto;">$10.99</span></div>
-              </div>
-          </div>
-          <div align="center"><img style="max-width: 100px;" src="https://onearabiannight.getkrowd.com/images/smoothie.png"></div>
-      </div>
-
-      <div class="column col-right" style="background: #ffffff; padding: 5px; display: flex; flex-direction: column; align-items: center; justify-content: center; border-left: 1px solid #f0f0f0;">
-          <img src="https://onearabiannight.getkrowd.com/images/main.png">
-          <h3 style="font-family: var(--sans-font); font-size: 1.1rem; text-align: center; margin-bottom: 20px; font-weight: bold; letter-spacing: 0.05em;">
-              ALL MENU ITEMS ARE<br>AVAILABLE
-          </h3>
-          
-          <h2 class="text-purple" style="font-size: 2.5rem; margin-bottom: 25px; font-family: var(--script-font);">Delivery Partners</h2>
-          
-          <div style="background: #000; color: #fff; padding: 25px 20px; width: 100%; border-radius: 8px; margin-bottom: 40px; box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
-              <div style="display: flex; justify-content: space-around; align-items: center; gap: 10px;">
-                  <div style="color: #FF3008; font-weight: bold; font-size: 1rem; display: flex; flex-direction: column; align-items: center;">
-                      <span style="font-size: 3.5rem; line-height: 1;">🏠</span> 
-                      DOORDASH
-                  </div>
-                  <div style="color: #06C167; font-weight: bold; font-size: 1rem; display: flex; flex-direction: column; align-items: center;">
-                      <span style="font-size: 3.5rem; line-height: 1;">🚗</span> 
-                      Uber Eats
-                  </div>
-              </div>
-          </div>
-
-          <div style="width: 100%; display: flex; flex-direction: column; gap: 12px;">
-              <div style="background: #000; color: #fff; padding: 15px; border-radius: 8px; font-weight: bold; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; gap: 10px;">
-                  📞 (315) 507-3888
-              </div>
-              <div style="background: #000; color: #fff; padding: 15px; border-radius: 8px; font-weight: normal; font-size: 1rem; display: flex; align-items: center; justify-content: center; gap: 10px;">
-                  🌐 www.onearabiannight.com
-              </div>
-              <div style="background: #000; color: #fff; padding: 15px; border-radius: 8px; font-weight: normal; font-size: 0.95rem; display: flex; align-items: center; justify-content: center; gap: 10px; text-align: center;">
-                  📍 706 Varick St Utica, NY 13502
-              </div>
-          </div>
-
-      </div>
-
-  </div>
-
-</section>
-
-<section class="reserve" id="reserve" data-section="contact">
-  <div>
-    <div class="eyebrow">Get In Touch</div>
-    <h2 class="sec-title">Contact<br><span>Us</span></h2>
-    <p class="body-t">We’d love to hear from you. Whether you have a question, need assistance, or want to connect with our team, we’re here to help. Reach out anytime and experience the warmth of our hospitality.</p>
-    <div class="contact-block">
-      <div class="contact-row">
-        <span class="contact-icon">📍</span>
-        <div>
-          <span class="contact-label">Location</span>
-          <p class="contact-val"><a href="https://maps.google.com/?q=706+Varick+St+Utica+NY+13502" target="_blank">706 Varick St<br>Utica, NY 13502</a></p>
-        </div>
-      </div>
-      <div class="contact-row">
-        <span class="contact-icon">🕐</span>
-        <div>
-          <span class="contact-label">Hours</span>
-          <p class="contact-val">Mon – Thu: 11am – 10pm<br>Fri – Sat: 11am – 12am<br>Sunday: 12pm – 9pm</p>
-        </div>
-      </div>
-      <div class="contact-row">
-        <span class="contact-icon">📞</span>
-        <div>
-          <span class="contact-label">Phone</span>
-          <p class="contact-val"><a href="tel:+13155073888">(315) 507-3888</a></p>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div>
-    <div class="two-col">
-      <div class="field"><label>First Name</label><input type="text" placeholder="Aisha"></div>
-      <div class="field"><label>Last Name</label><input type="text" placeholder="Rahman"></div>
-    </div>
-    <div class="field"><label>Email</label><input type="email" placeholder="your@email.com"></div>
-    <div class="field"><label>Phone</label><input type="tel" placeholder="(206) 555-0000"></div>
-   
-    <div class="field"><label>Requests</label><textarea rows="3" placeholder="Dietary requirements, occasion, seating preferences..."></textarea></div>
-    <button class="submit-btn">Send</button>
-  </div>
-</section>
-
-<footer data-section="footer">
-  <div class="footer-brand">One Arabian Night</div>
-  <p class="footer-copy">© 2026 One Arabian Night Restaurant · All rights reserved</p>
-  <div class="footer-links">
-    <a href="https://www.instagram.com/onearabianutica/">Instagram</a>
-    <a href="https://www.facebook.com/profile.php?id=61560570801710">Facebook</a>
-    <a href="https://www.yelp.com/biz/one-arabian-night-marib-restaurant-utica">Yelp</a>
-  </div>
-</footer>
-
-
 
   <script src="script.js"></script>
-</body></html>
+</body>
+</html>
