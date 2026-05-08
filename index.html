@@ -196,7 +196,7 @@
 </head>
 <body>
 
-<div data-section="navbar" class="nav-wrapper">
+<div class="nav-wrapper" data-section="navbar">
   <div class="topbar">
     <div class="topbar-social">
       <a href="https://www.instagram.com/onearabianutica/">IG</a>
@@ -214,7 +214,7 @@
     <div class="nav-inner">
       <ul class="nav-left">
         <li><a href="/">Home</a></li>
-        <li><a href="/menu">Menu</a></li>
+        <li><a href="https://paymegpt.com/p/NVj56zVZ6J">View Menu</a></li>
       </ul>
       <div class="nav-logo-wrap">
         <a href="/">
@@ -247,13 +247,14 @@
     </div>
   </nav>
   <div class="mobile-menu" id="mobileMenu">
+    <a href="https://paymegpt.com/p/NVj56zVZ6J" class="mobile-menu-menu-link" onclick="document.getElementById('mobileMenu').classList.remove('open')">View Menu</a>
     <a href="#contact" onclick="document.getElementById('mobileMenu').classList.remove('open')">Contact Us</a>
     <a href="tel:+13155073888">📞 (315) 507-3888</a>
     <a href="https://maps.google.com/?q=706+Varick+St,+Utica,+NY+13502">📍 Get Directions</a>
   </div>
 </div>
 
-<section data-section="hero" class="hero">
+<section class="hero" data-section="hero">
   <div class="hero-center-glow"></div>
   <div class="hero-geo"></div>
   <div class="hero-glow"></div>
@@ -265,13 +266,14 @@
   <div class="divider"><div class="diamond"></div></div>
   <p class="hero-sub">Where ancient spice routes meet timeless hospitality</p>
   <div class="cta-group">
+    <a href="https://paymegpt.com/p/NVj56zVZ6J" class="btn-gold">View Menu</a>
     <a href="#contact" class="btn-gold">Contact Us</a>
     <a href="#contact" class="btn-outline">Visit Us</a>
   </div>
   <div class="scroll-hint"><span>Scroll</span><div class="scroll-line"></div></div>
 </section>
 
-<section data-section="contact" class="contact-section" id="contact">
+<section class="contact-section" id="contact" data-section="contact">
   <div>
     <div class="eyebrow">Get In Touch</div>
     <h2 class="sec-title">Contact<br><span>Us</span></h2>
@@ -333,61 +335,6 @@
       <div class="form-error" id="form-error"></div>
     </form>
   </div>
-
-<script>
-document.getElementById('contact-form').addEventListener('submit', async function(e) {
-  e.preventDefault();
-  const submitBtn = document.getElementById('submit-btn');
-  submitBtn.disabled = true;
-
-  function getDate() {
-    const d = new Date();
-    return d.toDateString();
-  }
-  function getTime() {
-    const d = new Date();
-    const options = { hour: 'numeric', minute: '2-digit', hour12: true };
-    return d.toLocaleTimeString([], options);
-  }
-
-  const formData = new FormData(this);
-  const emailPayload = {
-    to: "onearabiannight1@gmail.com",
-    contactName: formData.get('contactName'),
-    contactEmail: formData.get('contactEmail'),
-    contactPhone: formData.get('contactPhone'),
-    message: formData.get('message')
-  };
-
-  const sheetPayload = {
-    name: formData.get('contactName'),
-    email: formData.get('contactEmail'),
-    phone: formData.get('contactPhone'),
-    message: formData.get('message') + "\n\nSubmitted: " + getDate() + " at " + getTime()
-  };
-
-  try {
-    await fetch('/send-email', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(emailPayload)
-    });
-    await fetch('/log-sheet', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(sheetPayload)
-    });
-    document.getElementById('form-success').style.display = 'block';
-    this.reset();
-  } catch(err) {
-    const errMsg = document.getElementById('form-error');
-    errMsg.textContent = 'An error occurred. Please try again later.';
-    errMsg.style.display = 'block';
-  } finally {
-    submitBtn.disabled = false;
-  }
-});
-</script>
 </section>
 
 <footer data-section="footer">
@@ -404,20 +351,15 @@ document.getElementById('contact-form').addEventListener('submit', async functio
 var KROWD_EMAIL_URL = 'https://api.getkrowd.com/v3/sendEmail/index.cfm?apiKey=krwd_55d0f6ea46590c34c08265bdf0fabe6a3296b6546f0a7ee2c500623ad31&companyId=1071';
 var SHEET_URL       = 'https://paymegpt.com/api/webhooks/flow/2921/c9df12041a12a0e27071e90a02f0b5dae775cf2a874f50b727dd4555ac2168ef';
 
-function getDate() {
-  var now = new Date();
-  var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-  var days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
-  return days[now.getDay()] + ' ' + months[now.getMonth()] + ' ' + now.getDate() + ' ' + now.getFullYear();
-}
-
-function getTime() {
-  var now = new Date();
-  var hours = now.getHours();
-  var mins = String(now.getMinutes()).padStart(2, '0');
-  var ampm = hours >= 12 ? 'PM' : 'AM';
-  hours = hours % 12 || 12;
-  return hours + ':' + mins + ' ' + ampm;
+function getNow() {
+  var now   = new Date();
+  var days  = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  var months= ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  var h     = now.getHours();
+  var m     = String(now.getMinutes()).padStart(2,'0');
+  var ampm  = h >= 12 ? 'PM' : 'AM';
+  h = h % 12 || 12;
+  return days[now.getDay()] + ' ' + months[now.getMonth()] + ' ' + now.getDate() + ' ' + now.getFullYear() + ' ' + h + ':' + m + ' ' + ampm;
 }
 
 document.getElementById('contact-form').addEventListener('submit', function(e) {
@@ -436,8 +378,10 @@ document.getElementById('contact-form').addEventListener('submit', function(e) {
   var contactEmail = document.getElementById('contactEmail').value.trim();
   var contactPhone = document.getElementById('contactPhone').value.trim();
   var message      = document.getElementById('message').value.trim();
+  var submitted    = getNow();
 
   var emailPayload = {
+    to:           'onearabiannight1@gmail.com',
     contactName:  contactName,
     contactEmail: contactEmail,
     contactPhone: contactPhone,
@@ -448,9 +392,7 @@ document.getElementById('contact-form').addEventListener('submit', function(e) {
     contactName:  contactName,
     contactEmail: contactEmail,
     contactPhone: contactPhone,
-    message:      message,
-    date:         getDate(),
-    time:         getTime(),
+    message:      message + '\n\nSubmitted: ' + submitted,
     to:           'onearabiannight1@gmail.com'
   };
 
