@@ -333,6 +333,61 @@
       <div class="form-error" id="form-error"></div>
     </form>
   </div>
+
+<script>
+document.getElementById('contact-form').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  const submitBtn = document.getElementById('submit-btn');
+  submitBtn.disabled = true;
+
+  function getDate() {
+    const d = new Date();
+    return d.toDateString();
+  }
+  function getTime() {
+    const d = new Date();
+    const options = { hour: 'numeric', minute: '2-digit', hour12: true };
+    return d.toLocaleTimeString([], options);
+  }
+
+  const formData = new FormData(this);
+  const emailPayload = {
+    to: "onearabiannight1@gmail.com",
+    contactName: formData.get('contactName'),
+    contactEmail: formData.get('contactEmail'),
+    contactPhone: formData.get('contactPhone'),
+    message: formData.get('message')
+  };
+
+  const sheetPayload = {
+    name: formData.get('contactName'),
+    email: formData.get('contactEmail'),
+    phone: formData.get('contactPhone'),
+    message: formData.get('message') + "\n\nSubmitted: " + getDate() + " at " + getTime()
+  };
+
+  try {
+    await fetch('/send-email', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(emailPayload)
+    });
+    await fetch('/log-sheet', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(sheetPayload)
+    });
+    document.getElementById('form-success').style.display = 'block';
+    this.reset();
+  } catch(err) {
+    const errMsg = document.getElementById('form-error');
+    errMsg.textContent = 'An error occurred. Please try again later.';
+    errMsg.style.display = 'block';
+  } finally {
+    submitBtn.disabled = false;
+  }
+});
+</script>
 </section>
 
 <footer data-section="footer">
