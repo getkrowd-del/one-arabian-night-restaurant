@@ -182,4 +182,13 @@
             footer { flex-direction: column; text-align: center; padding: 2rem 1.5rem; }
             .topbar { display: none; }
             .two-col { grid-template-columns: 1fr; }
+            
+            /* ADDED: padding/margin for mobile links */
+            .mobile-menu a {
+                padding-right: 10px;
+                margin-right: 10px;
+            }
+            .nav-logo-wrap a {
+                margin-right: 10px;
+            }
         }
