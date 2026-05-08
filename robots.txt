@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://onearabiannight.getkrowd.com/sitemap.xml
+Sitemap: https://onearabiannight.com/sitemap.xml
