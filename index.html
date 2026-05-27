@@ -1,11 +1,20 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Using Shrikhand for branding, Poppins for bold modern text, and Inter for legibility -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,700;0,900;1,900&family=Shrikhand&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    
 
-<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400;600;700&family=Lato:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
-
+    
 
 <!-- SEO Meta Tags -->
 <title>One Arabian Night Restaurant | Utica, NY</title>
@@ -14,6 +23,7 @@
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="One Arabian Night Restaurant | Utica, NY" />
 <!-- End SEO Meta Tags -->
+
 
 <script data-field-replace>
 (function(){
@@ -143,6 +153,7 @@
 (function(){
   var slug='SrmkChunH';
   var apiBase='https://paymegpt.com';
+  var successSubtext='';var successBtnLabel='Continue';var successBtnColor='#16a34a';var successRedirect='';
   function findEmail(){
     var ids=['email','emailAddress','buyer-email','buyerEmail','user-email','userEmail','checkout-email','customer-email','contact-email'];
     for(var i=0;i<ids.length;i++){var el=document.getElementById(ids[i]);if(el&&el.value&&el.value.includes('@'))return el.value.trim();}
@@ -172,9 +183,10 @@
     if(!amountCents||amountCents<100){alert('Amount must be at least $1.00');return Promise.reject('invalid_amount');}
     if(!email){alert('Please enter your email address.');return Promise.reject('no_email');}
     var successBase=window.location.href.split('?')[0];
+    var __pLoc=(document.documentElement.lang||navigator.language||'en');
     return fetch(apiBase+'/api/landing-pages/public/'+slug+'/payment/checkout',{
       method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({email:email,name:customerName,amountCents:amountCents,productName:productName,productDescription:productDescription,quantity:quantity,successUrl:successBase+'?payment=success&product='+encodeURIComponent(productName)+'&session_id={CHECKOUT_SESSION_ID}',cancelUrl:successBase+'?payment=cancelled'})
+      body:JSON.stringify({email:email,name:customerName,amountCents:amountCents,productName:productName,productDescription:productDescription,quantity:quantity,locale:__pLoc,successUrl:successBase+'?payment=success&product='+encodeURIComponent(productName)+'&session_id={CHECKOUT_SESSION_ID}',cancelUrl:successBase+'?payment=cancelled'})
     }).then(function(r){return r.json();}).then(function(d){
       if(d.checkoutUrl){window.location.href=d.checkoutUrl;}
       else{alert(d.error||'Failed to process payment');throw new Error(d.error);}
@@ -187,244 +199,353 @@
       var pName=urlParams.get('product')||'your item';
       var overlay=document.createElement('div');overlay.id='payment-success-overlay';
       overlay.style.cssText='position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;z-index:999999;font-family:system-ui,-apple-system,sans-serif;';
-      overlay.innerHTML='<div style="background:white;border-radius:16px;padding:40px;max-width:420px;width:90%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.15);"><div style="width:64px;height:64px;border-radius:50%;background:#dcfce7;margin:0 auto 20px;display:flex;align-items:center;justify-content:center;"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><h2 style="margin:0 0 12px;font-size:24px;font-weight:700;color:#111827;">Payment Successful!</h2><p style="margin:0 0 24px;color:#6b7280;font-size:16px;">Thank you for purchasing '+pName.replace(/</g,'&lt;').replace(/>/g,'&gt;')+'.</p><button onclick="document.getElementById(\'payment-success-overlay\').remove();window.history.replaceState({},\'\',window.location.pathname);" style="padding:12px 32px;font-size:16px;font-weight:600;background:#16a34a;color:white;border:none;border-radius:8px;cursor:pointer;">Continue</button></div>';
+      function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+      var subTxt=successSubtext||('Thank you for purchasing '+pName+'.');
+      overlay.innerHTML='<div style="background:white;border-radius:16px;padding:40px;max-width:420px;width:90%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.15);"><div style="width:64px;height:64px;border-radius:50%;background:#dcfce7;margin:0 auto 20px;display:flex;align-items:center;justify-content:center;"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><h2 style="margin:0 0 12px;font-size:24px;font-weight:700;color:#111827;">Payment Successful!</h2><p style="margin:0 0 24px;color:#6b7280;font-size:16px;">'+esc(subTxt)+'</p><button id="lp-pay-success-btn" style="padding:12px 32px;font-size:16px;font-weight:600;background:'+successBtnColor+';color:white;border:none;border-radius:8px;cursor:pointer;">'+esc(successBtnLabel)+'</button></div>';
       document.body.appendChild(overlay);
+      var pBtn=document.getElementById('lp-pay-success-btn');
+      if(pBtn){pBtn.addEventListener('click',function(){if(successRedirect){window.location.href=successRedirect;}else{overlay.remove();window.history.replaceState({},'',window.location.pathname);}});}
     }
   });
 })();
 </script>  <link rel="stylesheet" href="styles.css">
 </head>
-<body>
+<body class="font-body antialiased selection:bg-brand-maroon selection:text-white bg-brand-light">
 
-<div class="nav-wrapper" data-section="navbar">
-  <div class="topbar">
-    <div class="topbar-social">
-      <a href="https://www.instagram.com/onearabianutica/">IG</a>
-      <a href="https://www.facebook.com/profile.php?id=61560570801710">FB</a>
-      <a href="https://www.yelp.com/biz/one-arabian-night-marib-restaurant-utica">Yelp</a>
+    <nav class="fixed w-full z-50 glass transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center gap-4">
+                <img src="https://krowdimg.b-cdn.net/clients/Oh%20Crepe%20%26%20Waffles%20Food%20Truck/ohcrepe.jpg" alt="Logo" class="w-12 h-12 rounded-full border-2 border-brand-maroon shadow-[0_0_10px_rgba(115,22,37,0.2)]">
+                <span class="font-brand text-brand-maroonDark text-xl tracking-wider hidden sm:block">Oh Crêpe & Waffles Food Truck!</span>
+            </div>
+            <div class="flex gap-6 font-display font-bold text-sm tracking-widest uppercase text-brand-darkGray">
+                <a href="#menu" class="hover:text-brand-maroon transition-colors">Menu</a>
+                <a href="#truck" class="hover:text-brand-maroon transition-colors">The Truck</a>
+                <a href="#loyalty" class="text-brand-maroon hover:text-brand-gold transition-colors">VIP</a>
+            </div>
+        </div>
+    </nav>
+
+    <header class="relative min-h-screen flex items-center justify-center overflow-hidden pt-20 bg-black">
+        <!-- Background Image Container with Black Overlay Opacity -->
+        <div class="absolute inset-0 z-0">
+            <img src="https://krowdimg.b-cdn.net/clients/Oh%20Crepe%20%26%20Waffles%20Food%20Truck/crepeOne.jpg" alt="Crepe Background" class="w-full h-full object-cover">
+            <!-- Black overlay (adjust bg-black/60 to bg-black/50 or bg-black/70 to tweak opacity) -->
+            <div class="absolute inset-0 bg-black/70"></div>
+        </div>
+
+        <!-- Abstract glowing blobs in background (Shifted behind content but over image overlay) -->
+        <div class="absolute top-0 -left-4 w-72 h-72 bg-brand-gold rounded-full mix-blend-screen filter blur-3xl opacity-20 animate-blob z-0"></div>
+        <div class="absolute top-0 -right-4 w-72 h-72 bg-brand-maroon rounded-full mix-blend-screen filter blur-3xl opacity-20 animate-blob animation-delay-2000 z-0"></div>
+        <div class="absolute -bottom-8 left-20 w-72 h-72 bg-orange-500 rounded-full mix-blend-screen filter blur-3xl opacity-15 animate-blob animation-delay-4000 z-0"></div>
+
+        <div class="relative z-10 w-full max-w-7xl mx-auto px-6 flex flex-col lg:flex-row items-center gap-12">
+            
+            <!-- Left Text Content -->
+            <div class="flex-1 text-center lg:text-left z-10">
+                <h2 class="text-brand-gold font-display font-bold tracking-[0.2em] uppercase text-sm mb-4">Savory & Sweet</h2>
+                <h1 class="font-display font-black text-white px-1 text-6xl md:text-8xl lg:text-9xl leading-[0.9] mb-6 uppercase italic tracking-tighter">
+                    We <span class="text-transparent border-text" style="-webkit-text-stroke: 2px #F4B41A;">Move.</span><br>
+                    You <span class="text-gradient-light">Eat.</span>
+                </h1>
+                <p class="text-gray-300 text-lg md:text-xl font-body max-w-lg mx-auto lg:mx-0 mb-8">
+                    Freshly made Crêpes. Golden Waffles. Catch the truck and satisfy your cravings on the go.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+                    <a href="#menu" class="bg-brand-maroon text-white font-display font-bold uppercase tracking-wider px-8 py-4 rounded-full hover:bg-brand-gold hover:text-black hover:scale-105 transition-all shadow-[0_5px_15px_rgba(115,22,37,0.3)]">
+                        View Menu
+                    </a>
+                    <a href="#loyalty" class="bg-white/10 backdrop-blur-md text-white font-display font-bold uppercase tracking-wider px-8 py-4 rounded-full hover:bg-white hover:text-black border border-white/20 transition-all">
+                        Join VIP
+                    </a>
+                </div>
+            </div>
+
+            <!-- Right Image Hero -->
+            <div class="flex-1 relative flex justify-center items-center h-[500px] w-full">
+                <!-- Rotating badge -->
+                <div class="absolute top-0 right-0 lg:-right-10 z-20 animate-float-slow">
+                    <div class="bg-brand-gold w-32 h-32 rounded-full flex items-center justify-center border-4 border-white shadow-xl">
+                        <p class="font-brand text-center text-brand-maroonDark leading-tight rotate-12">100%<br>Fresh</p>
+                    </div>
+                </div>
+                <!-- Main Logo Display -->
+                <img src="https://krowdimg.b-cdn.net/clients/Oh%20Crepe%20%26%20Waffles%20Food%20Truck/ohcrepe.jpg" alt="Oh Crêpe Logo" class="w-full max-w-[400px] relative z-10 rounded-full shadow-[0_20px_50px_rgba(0,0,0,0.5)] animate-tilt border-8 border-white">
+            </div>
+        </div>
+    </header>
+
+    <!-- FIXED MARQUEE BANNER -->
+    <div class="flex overflow-x-hidden bg-brand-maroon text-brand-light font-display font-black uppercase italic tracking-widest text-2xl md:text-4xl py-4 border-y-4 border-brand-gold whitespace-nowrap z-20 shadow-lg">
+        <div class="animate-marquee flex shrink-0 items-center">
+            <span class="mx-8">🔥 FRESH CRÊPES</span> • 
+            <span class="mx-8">GOLDEN WAFFLES</span> • 
+            <span class="mx-8">SAVORY & SWEET</span> • 
+            <span class="mx-8">CATCH THE TRUCK</span> • 
+            <span class="mx-8">🔥 FRESH CRÊPES</span> • 
+            <span class="mx-8">GOLDEN WAFFLES</span> • 
+            <span class="mx-8">SAVORY & SWEET</span> • 
+            <span class="mx-8">CATCH THE TRUCK</span> •
+        </div>
+        <div class="animate-marquee flex shrink-0 items-center">
+            <span class="mx-8">🔥 FRESH CRÊPES</span> • 
+            <span class="mx-8">GOLDEN WAFFLES</span> • 
+            <span class="mx-8">SAVORY & SWEET</span> • 
+            <span class="mx-8">CATCH THE TRUCK</span> • 
+            <span class="mx-8">🔥 FRESH CRÊPES</span> • 
+            <span class="mx-8">GOLDEN WAFFLES</span> • 
+            <span class="mx-8">SAVORY & SWEET</span> • 
+            <span class="mx-8">CATCH THE TRUCK</span> •
+        </div>
     </div>
-    <div class="topbar-divider"></div>
-    <div class="topbar-info">
-      <a href="https://maps.google.com/?q=706+Varick+St+Utica+NY">📍 706 Varick St, Utica, NY 13502</a>
-      <a href="tel:+13155073888">📞 (315) 507-3888</a>
-      <a href="#contact">✦ Contact</a>
+
+    <section id="menu" class="py-24 relative z-10">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16 reveal">
+                <h2 class="font-brand text-5xl md:text-6xl text-brand-maroonDark mb-4">The Lineup</h2>
+                <div class="w-24 h-1 bg-brand-gold mx-auto rounded-full"></div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-8">
+                
+                <!-- Savory Crepes Section -->
+                <div class="reveal delay-100">
+                    <div class="flex items-center gap-4 mb-8">
+                        <div class="w-12 h-12 rounded-full bg-brand-maroon flex items-center justify-center text-white font-black text-2xl shadow-md">S</div>
+                        <h3 class="font-display font-black text-4xl uppercase tracking-tight text-brand-maroonDark">Savory <span class="text-brand-maroon">Crêpes</span></h3>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <!-- Buffalo Chicken Crepe -->
+                        <div class="glass-card p-6 rounded-2xl relative overflow-hidden group border-l-4 border-l-brand-maroon">
+                            <div class="absolute top-0 right-0 w-32 h-32 bg-brand-maroon/5 rounded-bl-full -z-10 transition-transform group-hover:scale-150 group-hover:bg-brand-maroon/10"></div>
+                            <div class="flex justify-between items-start mb-2">
+                                <h4 class="font-display font-bold text-2xl text-brand-dark group-hover:text-brand-maroon transition-colors">Buffalo Chicken Crepe</h4>
+                                <span class="bg-brand-maroon text-white font-bold px-3 py-1 rounded-lg text-lg shadow-sm">$12.50</span>
+                            </div>
+                            <p class="text-gray-600 font-body">Diced chicken, mixed cheese, and buffalo ranch wing sauce.</p>
+                        </div>
+
+                        <!-- Chicken Bacon Ranch Crepe -->
+                        <div class="glass-card p-6 rounded-2xl relative overflow-hidden group border-l-4 border-l-brand-maroon">
+                            <div class="absolute top-0 right-0 w-32 h-32 bg-brand-maroon/5 rounded-bl-full -z-10 transition-transform group-hover:scale-150 group-hover:bg-brand-maroon/10"></div>
+                            <div class="flex justify-between items-start mb-2">
+                                <h4 class="font-display font-bold text-2xl text-brand-dark group-hover:text-brand-maroon transition-colors">Chicken Bacon Ranch Crepe</h4>
+                                <span class="bg-brand-maroon text-white font-bold px-3 py-1 rounded-lg text-lg shadow-sm">$12.50</span>
+                            </div>
+                            <p class="text-gray-600 font-body">Diced chicken, mixed cheese, bacon crumbles, and ranch dressing.</p>
+                        </div>
+
+                        <!-- Pepperoni Pizza Crepe -->
+                        <div class="glass-card p-6 rounded-2xl relative overflow-hidden group border-l-4 border-l-brand-maroon">
+                            <div class="absolute top-0 right-0 w-32 h-32 bg-brand-maroon/5 rounded-bl-full -z-10 transition-transform group-hover:scale-150 group-hover:bg-brand-maroon/10"></div>
+                            <div class="flex justify-between items-start mb-2">
+                                <h4 class="font-display font-bold text-2xl text-brand-dark group-hover:text-brand-maroon transition-colors">Pepperoni Pizza Crepe</h4>
+                                <span class="bg-brand-maroon text-white font-bold px-3 py-1 rounded-lg text-lg shadow-sm">$12.50</span>
+                            </div>
+                            <p class="text-gray-600 font-body">Mixed cheeses, Italian seasoning, pepperoni, and pizza sauce.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sweet Treats Section -->
+                <div class="reveal delay-200">
+                    <div class="flex items-center gap-4 mb-8 lg:justify-end">
+                        <h3 class="font-display font-black text-4xl uppercase tracking-tight text-brand-maroonDark lg:text-right">Sweet <span class="text-brand-gold">Treats</span></h3>
+                        <div class="w-12 h-12 rounded-full bg-brand-gold flex items-center justify-center text-brand-maroon font-black text-2xl shadow-md">T</div>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <!-- Churro Waffle -->
+                        <div class="glass-card p-6 rounded-2xl relative overflow-hidden group">
+                            <div class="absolute top-0 left-0 w-32 h-32 bg-brand-gold/10 rounded-br-full -z-10 transition-transform group-hover:scale-150 group-hover:bg-brand-gold/20"></div>
+                            <div class="flex justify-between items-start mb-2">
+                                <h4 class="font-display font-bold text-2xl text-brand-dark group-hover:text-brand-maroon transition-colors">Churro Waffle</h4>
+                                <span class="bg-brand-gold text-black font-bold px-3 py-1 rounded-lg text-lg shadow-sm">$11.00</span>
+                            </div>
+                            <p class="text-gray-600 font-body">Cinnamon and Sugar coated waffle drizzled with caramel.</p>
+                        </div>
+
+                        <!-- Kelli Waffle -->
+                        <div class="glass-card p-6 rounded-2xl relative overflow-hidden group">
+                            <div class="absolute top-0 left-0 w-32 h-32 bg-brand-gold/10 rounded-br-full -z-10 transition-transform group-hover:scale-150 group-hover:bg-brand-gold/20"></div>
+                            <div class="flex justify-between items-start mb-2">
+                                <h4 class="font-display font-bold text-2xl text-brand-dark group-hover:text-brand-maroon transition-colors">Kelli Waffle</h4>
+                                <span class="bg-brand-gold text-black font-bold px-3 py-1 rounded-lg text-lg shadow-sm">$11.00</span>
+                            </div>
+                            <p class="text-gray-600 font-body">Our Belgium waffle topped with cheesecake, strawberries, and caramel sauce.</p>
+                        </div>
+
+                        <!-- Cookie Monster Waffle -->
+                        <div class="glass-card p-6 rounded-2xl relative overflow-hidden group">
+                            <div class="absolute top-0 left-0 w-32 h-32 bg-brand-gold/10 rounded-br-full -z-10 transition-transform group-hover:scale-150 group-hover:bg-brand-gold/20"></div>
+                            <div class="flex justify-between items-start mb-2">
+                                <h4 class="font-display font-bold text-2xl text-brand-dark group-hover:text-brand-maroon transition-colors">Cookie Monster Waffle</h4>
+                                <span class="bg-brand-gold text-black font-bold px-3 py-1 rounded-lg text-lg shadow-sm">$11.00</span>
+                            </div>
+                            <p class="text-gray-600 font-body">Our belgium waffle topped with oreo cookies, chips ahoy cookies, chocolate sauce and colored sprinkles.</p>
+                        </div>
+
+                        <!-- Lemon Blueberry Crepe -->
+                        <div class="glass-card p-6 rounded-2xl relative overflow-hidden group">
+                            <div class="absolute top-0 left-0 w-32 h-32 bg-brand-gold/10 rounded-br-full -z-10 transition-transform group-hover:scale-150 group-hover:bg-brand-gold/20"></div>
+                            <div class="flex justify-between items-start mb-2">
+                                <h4 class="font-display font-bold text-2xl text-brand-dark group-hover:text-brand-maroon transition-colors">Lemon Blueberry Crepe</h4>
+                                <span class="bg-brand-gold text-black font-bold px-3 py-1 rounded-lg text-lg shadow-sm">$11.00</span>
+                            </div>
+                            <p class="text-gray-600 font-body">Lemon filling and fresh blueberries inside of a french style crepe.</p>
+                        </div>
+
+                        <!-- The Original Crepe -->
+                        <div class="glass-card p-6 rounded-2xl relative overflow-hidden group">
+                            <div class="absolute top-0 left-0 w-32 h-32 bg-brand-gold/10 rounded-br-full -z-10 transition-transform group-hover:scale-150 group-hover:bg-brand-gold/20"></div>
+                            <div class="flex justify-between items-start mb-2">
+                                <h4 class="font-display font-bold text-2xl text-brand-dark group-hover:text-brand-maroon transition-colors">The Original Crepe</h4>
+                                <span class="bg-brand-gold text-black font-bold px-3 py-1 rounded-lg text-lg shadow-sm">$11.00</span>
+                            </div>
+                            <p class="text-gray-600 font-body">Strawberries and Nutella inside of our french style crepe.</p>
+                        </div>
+
+                        <!-- Oreo Delight Crepe -->
+                        <div class="glass-card p-6 rounded-2xl relative overflow-hidden group">
+                            <div class="absolute top-0 left-0 w-32 h-32 bg-brand-gold/10 rounded-br-full -z-10 transition-transform group-hover:scale-150 group-hover:bg-brand-gold/20"></div>
+                            <div class="flex justify-between items-start mb-2">
+                                <h4 class="font-display font-bold text-2xl text-brand-dark group-hover:text-brand-maroon transition-colors">Oreo Delight Crepe</h4>
+                                <span class="bg-brand-gold text-black font-bold px-3 py-1 rounded-lg text-lg shadow-sm">$11.00</span>
+                            </div>
+                            <p class="text-gray-600 font-body">Oreo pieces, chocolate sauce, and white chocolate syrup.</p>
+                        </div>
+                        
+                        <!-- Buckeye Waffle -->
+                        <div class="glass-card p-6 rounded-2xl relative overflow-hidden group">
+                            <div class="absolute top-0 left-0 w-32 h-32 bg-brand-gold/10 rounded-br-full -z-10 transition-transform group-hover:scale-150 group-hover:bg-brand-gold/20"></div>
+                            <div class="flex justify-between items-start mb-2">
+                                <h4 class="font-display font-bold text-2xl text-brand-dark group-hover:text-brand-maroon transition-colors">Buckeye Waffle</h4>
+                                <span class="bg-brand-gold text-black font-bold px-3 py-1 rounded-lg text-lg shadow-sm">$11.00</span>
+                            </div>
+                            <p class="text-gray-600 font-body">Peanut Butter and chocolate sauce smothered on either a crepe or a waffle.</p>
+                        </div>
+
+                        <!-- Chocolate Chip Cookie (Styled smaller) -->
+                        <div class="glass-card p-6 rounded-2xl relative overflow-hidden group border-black/5">
+                            <div class="flex justify-between items-start mb-2">
+                                <h4 class="font-display font-bold text-xl text-brand-maroonDark">Chocolate Chip Cookie</h4>
+                                <span class="text-brand-gold font-bold px-3 py-1 text-lg">$3.00</span>
+                            </div>
+                            <p class="text-gray-500 font-body text-sm">Soft and chewy cookie generously studded with rich chocolate chips.</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section id="truck" class="relative py-32 mt-12 bg-black border-y border-brand-maroon/20">
+        <div class="relative z-20 max-w-7xl mx-auto px-6 reveal">
+            <div class="flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
+                
+                <!-- Left: Food Focus Text -->
+                <div class="flex-1 text-center lg:text-left">
+                    <h2 class="font-display font-black text-5xl md:text-7xl uppercase italic mb-6 text-white leading-tight">
+                        Crafted to <br><span class="text-brand-gold" style="text-shadow: 2px 2px 0px #731625;">Crave.</span>
+                    </h2>
+                    <p class="text-xl font-body text-gray-300 mb-6 leading-relaxed">
+                        We're passionate about bringing gourmet flavors right to the streets. Every savory crêpe is folded with premium ingredients, and every sweet treat is made to satisfy.
+                    </p>
+                    <p class="text-lg font-body text-gray-400 italic">
+                        Catch the signature maroon rig and taste the difference of true street food excellence.
+                    </p>
+                </div>
+
+                <!-- Right: Framed Truck Image -->
+                <div class="flex-1 w-full relative">
+                    <!-- Decorative glow behind the white frame -->
+                    <div class="absolute inset-0 bg-brand-gold blur-3xl opacity-20 rounded-[3rem] -z-10 transform scale-95 translate-y-4"></div>
+                    
+                    <!-- White background with rounded corners containing the truck -->
+                    <div class="bg-white p-4 md:p-6 rounded-[2.5rem] shadow-2xl transform transition-transform duration-500 hover:scale-[1.02]">
+                        <img src="https://krowdimg.b-cdn.net/clients/Oh%20Crepe%20%26%20Waffles%20Food%20Truck/Screenshot%202026-05-13%20at%208.27.26%E2%80%AFPM.png" 
+                             alt="Oh Crêpe Food Truck" 
+                             class="w-full h-auto max-h-[500px] object-cover rounded-[1.5rem] shadow-inner">
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section id="loyalty" class="py-24 relative overflow-hidden">
+        <!-- Background accents -->
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-brand-gold rounded-full mix-blend-multiply filter blur-[120px] opacity-20 -z-10"></div>
+
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16 reveal flex flex-col items-center">
+                <h2 class="font-display font-black text-5xl md:text-6xl uppercase italic text-brand-maroonDark mb-4">Join The <span class="text-gradient">VIPs</span></h2>
+                <p class="text-gray-600 text-lg max-w-2xl mx-auto mb-8">Exclusive deals, secret menu items, and live location updates directly to your phone.</p>
+                
+                <!-- NEW VIP BUTTON -->
+                <a href="https://offercard.eatdrinklocals.com/index.cfm/1109" target="_blank" class="inline-flex items-center gap-3 bg-brand-maroon text-white font-display font-black uppercase tracking-wider px-10 py-5 rounded-full hover:bg-brand-gold hover:text-black hover:scale-105 transition-all shadow-[0_10px_30px_rgba(115,22,37,0.4)] text-xl group">
+                    Claim VIP Access
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 transform group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                    </svg>
+                </a>
+            </div>
+
+            <div class="flex flex-col lg:flex-row justify-center items-center gap-12 lg:gap-20">
+                <!-- Flyer 1 -->
+                <div class="relative group reveal delay-100">
+                    <div class="absolute inset-0 bg-brand-maroon rounded-3xl blur-2xl opacity-10 group-hover:opacity-30 transition-opacity duration-500"></div>
+                  
+                </div>
+
+                <!-- Flyer 2 -->
+                <div class="relative group reveal delay-300">
+                    <div class="absolute inset-0 bg-brand-gold rounded-3xl blur-2xl opacity-20 group-hover:opacity-40 transition-opacity duration-500"></div>
+                    <img src="ChatGPT Image May 13, 2026, 08_47_00 PM.png" 
+                         alt="Location Updates" 
+                         class="relative w-full max-w-[400px] rounded-3xl border border-black/5 shadow-2xl transform transition-transform duration-500 group-hover:scale-[1.03] group-hover:rotate-2"
+                         onerror="this.style.display='none'">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-brand-maroonDark border-t border-brand-maroon py-12 text-center relative z-20">
+        <div class="max-w-4xl mx-auto px-6 flex flex-col items-center">
+            <div class="bg-white p-2 rounded-full mb-6 inline-block">
+                <img src="https://krowdimg.b-cdn.net/clients/Oh%20Crepe%20%26%20Waffles%20Food%20Truck/ohcrepe.jpg" alt="Logo" class="w-16 h-16 rounded-full opacity-90 hover:opacity-100 transition-all duration-300">
+            </div>
+            <h2 class="font-display font-black text-3xl uppercase tracking-widest text-brand-light mb-2">Oh Crêpe & Waffles</h2>
+            <p class="text-brand-gold font-bold tracking-widest text-sm mb-8">STREET FOOD EXCELLENCE</p>
+            <p class="text-gray-400 text-sm font-body">&copy; 2026 Oh Crêpe & Waffles. All rights reserved. Keep it fresh.</p>
+        </div>
+    </footer>
+
+    <!-- Chat Widget HTML -->
+    <div id="crepe-chat-wrapper">
+        <!-- New Welcome Text Popout Bubble -->
+        <div id="crepe-chat-popout" class="hidden max-w-[280px] bg-brand-dark text-white rounded-2xl rounded-br-none p-4 text-sm relative shadow-2xl border border-brand-gold font-body leading-relaxed transition-all duration-300 select-none">
+            <button onclick="event.stopPropagation(); document.getElementById('crepe-chat-popout').style.display='none';" class="absolute top-2 right-2 text-white/50 hover:text-white transition-colors text-xs p-1" title="Dismiss">✕</button>
+            <p class="pr-3">👋 Hey! Hungry for crêpes? Ask me anything about our truck schedule, custom menus, or catering details!</p>
+        </div>
+
+        <div id="crepe-chat-bubble" onclick="toggleCrepeChat()" title="Chat with Crepe!">
+            <img src="https://krowdimg.b-cdn.net/clients/Oh%20Crepe%20%26%20Waffles%20Food%20Truck/ChatGPT%20Image%20May%2013%2C%202026%2C%2009_13_00%20PM.png" alt="Crepe Chat Bot" class="w-full h-full object-contain">
+        </div>
     </div>
-  </div>
-  <nav class="nav-bottom">
-    <div class="nav-inner">
-      <ul class="nav-left">
-        <li><a href="https://onearabiannight.com/">Home</a></li>
-        <li><a href="https://onearabiannight.com/menu/">View Menu</a></li>
-      </ul>
-      <div class="nav-logo-wrap">
-        <a href="https://onearabiannight.com/">
-          <svg class="nav-logo-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-            <path d="M100 20 C60 20,30 55,30 95 L30 160 L170 160 L170 95 C170 55,140 20,100 20Z" fill="none" stroke="#C9952A" stroke-width="2.5"/>
-            <path d="M100 35 C68 35,48 62,48 95 L48 148 L152 148 L152 95 C152 62,132 35,100 35Z" fill="none" stroke="#E8C46A" stroke-width="1"/>
-            <circle cx="100" cy="18" r="5" fill="#C9952A"/>
-            <line x1="38" y1="115" x2="22" y2="115" stroke="#C9952A" stroke-width="2"/>
-            <line x1="22" y1="108" x2="22" y2="122" stroke="#C9952A" stroke-width="2"/>
-            <line x1="18" y1="108" x2="18" y2="122" stroke="#C9952A" stroke-width="2"/>
-            <line x1="26" y1="108" x2="26" y2="122" stroke="#C9952A" stroke-width="2"/>
-            <line x1="162" y1="115" x2="178" y2="115" stroke="#C9952A" stroke-width="2"/>
-            <line x1="178" y1="108" x2="178" y2="122" stroke="#C9952A" stroke-width="2"/>
-            <line x1="174" y1="108" x2="174" y2="122" stroke="#C9952A" stroke-width="2"/>
-            <line x1="182" y1="108" x2="182" y2="122" stroke="#C9952A" stroke-width="2"/>
-            <text x="100" y="90" font-family="Georgia,serif" font-size="17" font-weight="900" fill="#C9952A" text-anchor="middle">ONE</text>
-            <text x="100" y="112" font-family="Georgia,serif" font-size="13" font-weight="700" fill="#E8C46A" text-anchor="middle">ARABIAN</text>
-            <text x="100" y="131" font-family="Georgia,serif" font-size="10" fill="#C9952A" text-anchor="middle">NIGHT</text>
-            <line x1="60" y1="146" x2="140" y2="146" stroke="#C9952A" stroke-width="1.5"/>
-            <text x="100" y="163" font-family="Arial,sans-serif" font-size="7" fill="#E8C46A" text-anchor="middle" letter-spacing="4">RESTAURANT</text>
-          </svg>
-        </a>
-      </div>
-      <ul class="nav-right">
-        <li><a href="#contact" class="nav-reserve-btn">Contact</a></li>
-      </ul>
-      <button class="nav-hamburger" onclick="document.getElementById('mobileMenu').classList.toggle('open')">
-        <span></span><span></span><span></span>
-      </button>
+
+    <!-- Iframe Chat Panel -->
+    <div id="crepe-chat-panel">
+        <iframe src="https://paymegpt.com/agents/60262109/embed" allow="microphone" title="Oh Crepe Chat"></iframe>
     </div>
-  </nav>
-  <div class="mobile-menu" id="mobileMenu">
-    <a href="https://onearabiannight.com/menu/" class="mobile-menu-menu-link" onclick="document.getElementById('mobileMenu').classList.remove('open')">View Menu</a>
-    <a href="#contact" onclick="document.getElementById('mobileMenu').classList.remove('open')">Contact Us</a>
-    <a href="tel:+13155073888">📞 (315) 507-3888</a>
-    <a href="https://maps.google.com/?q=706+Varick+St,+Utica,+NY+13502">📍 Get Directions</a>
-  </div>
-</div>
 
-<section class="hero" data-section="hero">
-  <div class="hero-center-glow"></div>
-  <div class="hero-geo"></div>
-  <div class="hero-glow"></div>
-  <div class="hero-logo-wrap">
-    <img src="https://onearabiannight.com/images/IMG_3208.png" alt="One Arabian Night Logo">
-  </div>
-  <p class="hero-eyebrow">An Authentic Arabian Dining Experience</p>
-  <h1 class="hero-title">One Arabian<br><span>Night</span></h1>
-  <div class="divider"><div class="diamond"></div></div>
-  <p class="hero-sub">Where ancient spice routes meet timeless hospitality</p>
-  <div class="cta-group">
-    <a href="https://onearabiannight.com/menu/" class="btn-gold">View Menu</a>
-    <a href="#contact" class="btn-gold">Contact Us</a>
-    <a href="#contact" class="btn-outline">Visit Us</a>
-  </div>
-  <div class="scroll-hint"><span>Scroll</span><div class="scroll-line"></div></div>
-</section>
+    <!-- Intersection Observer Script for Scroll Animations -->
+    
 
-<section class="contact-section" id="contact" data-section="contact">
-  <div>
-    <div class="eyebrow">Get In Touch</div>
-    <h2 class="sec-title">Contact<br><span>Us</span></h2>
-    <p class="body-t">Have a question or want to plan a special event? Reach out to us and we'll get back to you as soon as possible.</p>
-    <div class="contact-block">
-      <div class="contact-row">
-        <span class="contact-icon">📍</span>
-        <div>
-          <span class="contact-label">Location</span>
-          <p class="contact-val"><a href="https://maps.google.com/?q=706+Varick+St,+Utica,+NY+13502" target="_blank">706 Varick St<br>Utica, NY 13502</a></p>
-        </div>
-      </div>
-      <div class="contact-row">
-        <span class="contact-icon">🕐</span>
-        <div>
-          <span class="contact-label">Hours</span>
-          <p class="contact-val">Mon – Thu: 11am – 10pm<br>Fri – Sat: 11am – 12am<br>Sunday: 12pm – 9pm</p>
-        </div>
-      </div>
-      <div class="contact-row">
-        <span class="contact-icon">📞</span>
-        <div>
-          <span class="contact-label">Phone</span>
-          <p class="contact-val"><a href="tel:+13155073888">(315) 507-3888</a></p>
-        </div>
-      </div>
-      <div class="contact-row">
-        <span class="contact-icon">✉️</span>
-        <div>
-          <span class="contact-label">Email</span>
-          <p class="contact-val"><a href="mailto:onearabiannight1@gmail.com">onearabiannight1@gmail.com</a></p>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div>
-    <form id="contact-form">
-      <div class="two-col">
-        <div class="field">
-          <label for="contactName">Name</label>
-          <input id="contactName" name="contactName" type="text" placeholder="Aisha Rahman" required>
-        </div>
-        <div class="field">
-          <label for="contactEmail">Email</label>
-          <input id="contactEmail" name="contactEmail" type="email" placeholder="your@email.com" required>
-        </div>
-      </div>
-      <div class="field">
-        <label for="contactPhone">Phone</label>
-        <input id="contactPhone" name="contactPhone" type="tel" placeholder="(315) 507-3888">
-      </div>
-      <div class="field">
-        <label for="message">Message</label>
-        <textarea id="message" name="message" rows="5" placeholder="How can we help you?" required></textarea>
-      </div>
-      <button class="submit-btn" type="submit" id="submit-btn">Send Message</button>
-      <div class="form-success" id="form-success">✦ Thank you! We'll be in touch soon.</div>
-      <div class="form-error" id="form-error"></div>
-    </form>
-  </div>
-</section>
-
-<footer data-section="footer">
-  <div class="footer-brand">One Arabian Night</div>
-  <p class="footer-copy">© 2026 One Arabian Night Restaurant · 706 Varick St, Utica, NY 13502 · All rights reserved</p>
-  <div class="footer-links">
-    <a href="https://onearabiannight.com/">Instagram</a>
-    <a href="https://onearabiannight.com/">Facebook</a>
-    <a href="https://www.yelp.com/biz/one-arabian-night-marib-restaurant-utica">Yelp</a>
-  </div>
-</footer>
-
-<script>
-var KROWD_EMAIL_URL = 'https://api.getkrowd.com/v3/sendEmail/index.cfm?apiKey=krwd_55d0f6ea46590c34c08265bdf0fabe6a3296b6546f0a7ee2c500623ad31&companyId=1071';
-var SHEET_URL       = 'https://paymegpt.com/api/webhooks/flow/2921/c9df12041a12a0e27071e90a02f0b5dae775cf2a874f50b727dd4555ac2168ef';
-
-function getNow() {
-  var now   = new Date();
-  var days  = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
-  var months= ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-  var h     = now.getHours();
-  var m     = String(now.getMinutes()).padStart(2,'0');
-  var ampm  = h >= 12 ? 'PM' : 'AM';
-  h = h % 12 || 12;
-  return days[now.getDay()] + ' ' + months[now.getMonth()] + ' ' + now.getDate() + ' ' + now.getFullYear() + ' ' + h + ':' + m + ' ' + ampm;
-}
-
-document.getElementById('contact-form').addEventListener('submit', function(e) {
-  e.preventDefault();
-
-  var btn       = document.getElementById('submit-btn');
-  var successEl = document.getElementById('form-success');
-  var errorEl   = document.getElementById('form-error');
-
-  successEl.style.display = 'none';
-  errorEl.style.display   = 'none';
-  btn.disabled            = true;
-  btn.textContent         = 'Sending...';
-
-  var contactName  = document.getElementById('contactName').value.trim();
-  var contactEmail = document.getElementById('contactEmail').value.trim();
-  var contactPhone = document.getElementById('contactPhone').value.trim();
-  var message      = document.getElementById('message').value.trim();
-  var submitted    = getNow();
-
-  var emailPayload = {
-    to:           'onearabiannight1@gmail.com',
-    contactName:  contactName,
-    contactEmail: contactEmail,
-    contactPhone: contactPhone,
-    message:      message
-  };
-
-  var sheetPayload = {
-    contactName:  contactName,
-    contactEmail: contactEmail,
-    contactPhone: contactPhone,
-    message:      message + '\n\nSubmitted: ' + submitted,
-    to:           'onearabiannight1@gmail.com'
-  };
-
-  var emailCall = fetch(KROWD_EMAIL_URL, {
-    method:  'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body:    JSON.stringify(emailPayload)
-  });
-
-  var sheetCall = fetch(SHEET_URL, {
-    method:  'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body:    JSON.stringify(sheetPayload)
-  });
-
-  Promise.allSettled([emailCall, sheetCall]).then(function(results) {
-    var emailOk = results[0].status === 'fulfilled' && results[0].value && results[0].value.ok;
-    var sheetOk = results[1].status === 'fulfilled' && results[1].value && results[1].value.ok;
-
-    if (emailOk || sheetOk) {
-      successEl.style.display = 'block';
-      document.getElementById('contact-form').reset();
-    } else {
-      errorEl.textContent   = 'Something went wrong. Please call us at (315) 507-3888.';
-      errorEl.style.display = 'block';
-    }
-
-    btn.disabled    = false;
-    btn.textContent = 'Send Message';
-  });
-});
-</script>
-
+    <!-- Chat Widget Logic -->
+    
+  <script src="script.js"></script>
 </body>
 </html>
